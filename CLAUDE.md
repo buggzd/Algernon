@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-A zero-dependency brain training web app ("脑力训练营") with 9 training games. Now built with **Vite + Tauri v2** — runs in the browser (`npm run dev`) or as a native desktop app (`npm run tauri dev`).
+**Algernon** — a zero-dependency brain training web app with 9 training games. Built with **Vite + Tauri v2** — runs in the browser (`npm run dev`) or as a native desktop app (`npm run tauri dev`).
 
 A legacy single-file version also exists at `brain-training-camp.html` (self-contained, open directly in browser).
 
