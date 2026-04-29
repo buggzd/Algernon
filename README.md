@@ -4,7 +4,7 @@
 
 <h1 align="center">Algernon</h1>
 
-<p align="center">基于 <a href="https://github.com/Perhacept/train_brain">Perhacept/train_brain</a> 改进的脑力认知训练应用。"Algernon" 致敬《献给阿尔吉侬的花束》。</p>
+<p align="center">基于 <a href="https://github.com/Perhacept/train_brain">Perhacept/train_brain</a> 改进的脑力认知训练应用。"Algernon" 源自《献给阿尔吉侬的花束》。</p>
 
 ## 功能
 
