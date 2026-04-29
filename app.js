@@ -24,21 +24,26 @@
       async function loadRecordsFile() {
         if (!isTauri) return loadRecordsLocalStorage();
 
-        const { join } = tauriModules.path;
-        const { exists, readTextFile } = tauriModules.fs;
+        try {
+          const { join } = tauriModules.path;
+          const { exists, readTextFile } = tauriModules.fs;
 
-        const filePath = await join(appDataDir, RECORDS_FILENAME);
-        if (await exists(filePath)) {
-          const content = await readTextFile(filePath);
-          return JSON.parse(content);
-        }
+          const filePath = await join(appDataDir, RECORDS_FILENAME);
+          if (await exists(filePath)) {
+            const content = await readTextFile(filePath);
+            return JSON.parse(content);
+          }
 
-        // First run: migrate from localStorage if available
-        const legacy = loadRecordsLocalStorage();
-        if (legacy.length > 0) {
-          await writeRecordsFile(legacy);
+          // First run: migrate from localStorage if available
+          const legacy = loadRecordsLocalStorage();
+          if (legacy.length > 0) {
+            await writeRecordsFile(legacy);
+          }
+          return legacy;
+        } catch (err) {
+          console.warn("loadRecordsFile failed, falling back to localStorage:", err);
+          return loadRecordsLocalStorage();
         }
-        return legacy;
       }
 
       function loadRecordsLocalStorage() {
@@ -56,11 +61,16 @@
           return;
         }
 
-        const { join } = tauriModules.path;
-        const { writeTextFile } = tauriModules.fs;
+        try {
+          const { join } = tauriModules.path;
+          const { writeTextFile } = tauriModules.fs;
 
-        const filePath = await join(appDataDir, RECORDS_FILENAME);
-        await writeTextFile(filePath, JSON.stringify(records, null, 2));
+          const filePath = await join(appDataDir, RECORDS_FILENAME);
+          await writeTextFile(filePath, JSON.stringify(records, null, 2));
+        } catch (err) {
+          console.warn("writeRecordsFile failed, falling back to localStorage:", err);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+        }
       }
 
       // ---- Preferences persistence ----
@@ -71,14 +81,18 @@
       async function loadPreferencesFile() {
         if (!isTauri) return null;
 
-        var _join = tauriModules.path.join;
-        var _exists = tauriModules.fs.exists;
-        var _readTextFile = tauriModules.fs.readTextFile;
+        try {
+          var _join = tauriModules.path.join;
+          var _exists = tauriModules.fs.exists;
+          var _readTextFile = tauriModules.fs.readTextFile;
 
-        var filePath = await _join(appDataDir, PREFS_FILENAME);
-        if (await _exists(filePath)) {
-          var content = await _readTextFile(filePath);
-          return JSON.parse(content);
+          var filePath = await _join(appDataDir, PREFS_FILENAME);
+          if (await _exists(filePath)) {
+            var content = await _readTextFile(filePath);
+            return JSON.parse(content);
+          }
+        } catch (err) {
+          console.warn("loadPreferencesFile failed:", err);
         }
         return null;
       }
@@ -86,11 +100,15 @@
       async function writePreferencesFile(prefs) {
         if (!isTauri) return;
 
-        var _join = tauriModules.path.join;
-        var _writeTextFile = tauriModules.fs.writeTextFile;
+        try {
+          var _join = tauriModules.path.join;
+          var _writeTextFile = tauriModules.fs.writeTextFile;
 
-        var filePath = await _join(appDataDir, PREFS_FILENAME);
-        await _writeTextFile(filePath, JSON.stringify(prefs, null, 2));
+          var filePath = await _join(appDataDir, PREFS_FILENAME);
+          await _writeTextFile(filePath, JSON.stringify(prefs, null, 2));
+        } catch (err) {
+          console.warn("writePreferencesFile failed:", err);
+        }
       }
 
       function extractPreferences() {
@@ -3391,5 +3409,5 @@
         initRecordsActions();
         initPanelSwitcher();
       }
-      boot();
+      boot().catch(function (err) { console.error("boot failed:", err); });
     })();
