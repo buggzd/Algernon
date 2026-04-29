@@ -322,7 +322,7 @@
           cycleBeatStates: []
         },
         ui: {
-          activePanelId: "schulte-card"
+          activePanelId: "home-card"
         }
       };
 
@@ -479,6 +479,7 @@
       };
 
       const PANEL_IDS = [
+        "home-card",
         "schulte-card",
         "tback-card",
         "stroop-card",
@@ -794,7 +795,7 @@
 
       function getPanelIdFromHash() {
         const hash = window.location.hash.replace(/^#/, "");
-        return panelMap.has(hash) ? hash : "schulte-card";
+        return panelMap.has(hash) ? hash : "home-card";
       }
 
       function updatePanelHash(panelId) {
@@ -892,7 +893,7 @@
 
       function switchTrainingPanel(panelId, options) {
         const config = options || {};
-        const nextPanelId = panelMap.has(panelId) ? panelId : "schulte-card";
+        const nextPanelId = panelMap.has(panelId) ? panelId : "home-card";
         const currentPanelId = state.ui.activePanelId;
 
         if (currentPanelId && currentPanelId !== nextPanelId && hasActiveSession(currentPanelId)) {

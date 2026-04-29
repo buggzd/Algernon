@@ -22,7 +22,11 @@
           </div>
 
           <div class="quick-nav" id="quick-nav" role="tablist" aria-label="训练项目切换">
-            <button class="quick-nav-tab" id="nav-schulte-card" data-panel-target="schulte-card" type="button" role="tab" aria-selected="true" aria-controls="schulte-card">
+            <button class="quick-nav-tab" id="nav-home-card" data-panel-target="home-card" type="button" role="tab" aria-selected="true" aria-controls="home-card">
+              <span class="quick-nav-copy"><strong>首页</strong><small>简介与训练总览</small></span>
+              <span class="quick-nav-index">00</span>
+            </button>
+            <button class="quick-nav-tab" id="nav-schulte-card" data-panel-target="schulte-card" type="button" role="tab" aria-selected="false" aria-controls="schulte-card" tabindex="-1">
               <span class="quick-nav-copy"><strong>舒尔特方格</strong><small>专注与视野扫描</small></span>
               <span class="quick-nav-index">01</span>
             </button>
@@ -69,37 +73,39 @@
       </aside>
 
       <main class="main-stage">
-        <section class="hero">
-          <div class="eyebrow">离线单文件 · 本地记录 · 手机可用</div>
-          <h1>Algernon</h1>
-          <p>一个专门给本地使用设计的轻量训练页面，包含舒尔特方格、T-Back 工作记忆、Stroop 斯特鲁普色词测试、Go/No-Go 冲动克制、反扫视、凝视专注抗干扰、多轮反应时训练、持续注意力训练，以及吸 4 秒呼 6 秒的节拍呼吸慢练。所有记录默认保存在当前浏览器的本地存储里，不依赖网络。</p>
-        </section>
+        <section class="home-view is-active" id="home-card" role="tabpanel" aria-labelledby="nav-home-card" aria-hidden="false">
+          <section class="hero">
+            <div class="eyebrow">离线单文件 · 本地记录 · 手机可用</div>
+            <h1>Algernon</h1>
+            <p>一个专门给本地使用设计的轻量训练页面，包含舒尔特方格、T-Back 工作记忆、Stroop 斯特鲁普色词测试、Go/No-Go 冲动克制、反扫视、凝视专注抗干扰、多轮反应时训练、持续注意力训练，以及吸 4 秒呼 6 秒的节拍呼吸慢练。所有记录默认保存在当前浏览器的本地存储里，不依赖网络。</p>
+          </section>
 
-        <section class="stats-grid" aria-label="训练总览">
-      <article class="panel stat-card">
-        <h3>总训练次数</h3>
-        <div class="stat-value" id="total-sessions">0</div>
-        <div class="stat-note">所有模块累计记录</div>
-      </article>
-      <article class="panel stat-card">
-        <h3>累计训练时长</h3>
-        <div class="stat-value" id="total-duration">0s</div>
-        <div class="stat-note">按每次游戏时长合计</div>
-      </article>
-      <article class="panel stat-card">
-        <h3>舒尔特最佳</h3>
-        <div class="stat-value" id="best-schulte">-</div>
-        <div class="stat-note">越短越好</div>
-      </article>
-      <article class="panel stat-card">
-        <h3>T-Back 最佳</h3>
-        <div class="stat-value" id="best-tback">-</div>
-        <div class="stat-note">按准确率统计</div>
-      </article>
+          <section class="stats-grid" aria-label="训练总览">
+            <article class="panel stat-card">
+              <h3>总训练次数</h3>
+              <div class="stat-value" id="total-sessions">0</div>
+              <div class="stat-note">所有模块累计记录</div>
+            </article>
+            <article class="panel stat-card">
+              <h3>累计训练时长</h3>
+              <div class="stat-value" id="total-duration">0s</div>
+              <div class="stat-note">按每次游戏时长合计</div>
+            </article>
+            <article class="panel stat-card">
+              <h3>舒尔特最佳</h3>
+              <div class="stat-value" id="best-schulte">-</div>
+              <div class="stat-note">越短越好</div>
+            </article>
+            <article class="panel stat-card">
+              <h3>T-Back 最佳</h3>
+              <div class="stat-value" id="best-tback">-</div>
+              <div class="stat-note">按准确率统计</div>
+            </article>
+          </section>
         </section>
 
         <section class="games-grid">
-      <article class="panel game-card is-active" id="schulte-card" role="tabpanel" aria-labelledby="nav-schulte-card" aria-hidden="false">
+      <article class="panel game-card" id="schulte-card" role="tabpanel" aria-labelledby="nav-schulte-card" aria-hidden="true" hidden>
         <div class="section-head">
           <div>
             <h2>舒尔特方格</h2>

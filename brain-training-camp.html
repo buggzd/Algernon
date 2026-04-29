@@ -311,6 +311,18 @@
       margin-top: 18px;
     }
 
+    .home-view {
+      display: none;
+    }
+
+    .home-view.is-active {
+      display: block;
+    }
+
+    .home-view[hidden] {
+      display: none !important;
+    }
+
     .stats-grid {
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       animation: rise 0.75s ease-out 0.08s both;
@@ -359,7 +371,7 @@
     .games-grid {
       display: block;
       max-width: none;
-      margin: 18px 0 0;
+      margin: 0;
       animation: rise 0.8s ease-out 0.14s both;
     }
 
@@ -2788,7 +2800,11 @@
           </div>
 
           <div class="quick-nav" id="quick-nav" role="tablist" aria-label="训练项目切换">
-            <button class="quick-nav-tab" id="nav-schulte-card" data-panel-target="schulte-card" type="button" role="tab" aria-selected="true" aria-controls="schulte-card">
+            <button class="quick-nav-tab" id="nav-home-card" data-panel-target="home-card" type="button" role="tab" aria-selected="true" aria-controls="home-card">
+              <span class="quick-nav-copy"><strong>首页</strong><small>简介与训练总览</small></span>
+              <span class="quick-nav-index">00</span>
+            </button>
+            <button class="quick-nav-tab" id="nav-schulte-card" data-panel-target="schulte-card" type="button" role="tab" aria-selected="false" aria-controls="schulte-card" tabindex="-1">
               <span class="quick-nav-copy"><strong>舒尔特方格</strong><small>专注与视野扫描</small></span>
               <span class="quick-nav-index">01</span>
             </button>
@@ -2835,37 +2851,39 @@
       </aside>
 
       <main class="main-stage">
-        <section class="hero">
-          <div class="eyebrow">离线单文件 · 本地记录 · 手机可用</div>
-          <h1>Algernon</h1>
-          <p>一个专门给本地使用设计的轻量训练页面，包含舒尔特方格、T-Back 工作记忆、Stroop 斯特鲁普色词测试、Go/No-Go 冲动克制、反扫视、凝视专注抗干扰、多轮反应时训练、持续注意力训练，以及吸 4 秒呼 6 秒的节拍呼吸慢练。所有记录默认保存在当前浏览器的本地存储里，不依赖网络。</p>
-        </section>
+        <section class="home-view is-active" id="home-card" role="tabpanel" aria-labelledby="nav-home-card" aria-hidden="false">
+          <section class="hero">
+            <div class="eyebrow">离线单文件 · 本地记录 · 手机可用</div>
+            <h1>Algernon</h1>
+            <p>一个专门给本地使用设计的轻量训练页面，包含舒尔特方格、T-Back 工作记忆、Stroop 斯特鲁普色词测试、Go/No-Go 冲动克制、反扫视、凝视专注抗干扰、多轮反应时训练、持续注意力训练，以及吸 4 秒呼 6 秒的节拍呼吸慢练。所有记录默认保存在当前浏览器的本地存储里，不依赖网络。</p>
+          </section>
 
-        <section class="stats-grid" aria-label="训练总览">
-      <article class="panel stat-card">
-        <h3>总训练次数</h3>
-        <div class="stat-value" id="total-sessions">0</div>
-        <div class="stat-note">所有模块累计记录</div>
-      </article>
-      <article class="panel stat-card">
-        <h3>累计训练时长</h3>
-        <div class="stat-value" id="total-duration">0s</div>
-        <div class="stat-note">按每次游戏时长合计</div>
-      </article>
-      <article class="panel stat-card">
-        <h3>舒尔特最佳</h3>
-        <div class="stat-value" id="best-schulte">-</div>
-        <div class="stat-note">越短越好</div>
-      </article>
-      <article class="panel stat-card">
-        <h3>T-Back 最佳</h3>
-        <div class="stat-value" id="best-tback">-</div>
-        <div class="stat-note">按准确率统计</div>
-      </article>
+          <section class="stats-grid" aria-label="训练总览">
+            <article class="panel stat-card">
+              <h3>总训练次数</h3>
+              <div class="stat-value" id="total-sessions">0</div>
+              <div class="stat-note">所有模块累计记录</div>
+            </article>
+            <article class="panel stat-card">
+              <h3>累计训练时长</h3>
+              <div class="stat-value" id="total-duration">0s</div>
+              <div class="stat-note">按每次游戏时长合计</div>
+            </article>
+            <article class="panel stat-card">
+              <h3>舒尔特最佳</h3>
+              <div class="stat-value" id="best-schulte">-</div>
+              <div class="stat-note">越短越好</div>
+            </article>
+            <article class="panel stat-card">
+              <h3>T-Back 最佳</h3>
+              <div class="stat-value" id="best-tback">-</div>
+              <div class="stat-note">按准确率统计</div>
+            </article>
+          </section>
         </section>
 
         <section class="games-grid">
-      <article class="panel game-card is-active" id="schulte-card" role="tabpanel" aria-labelledby="nav-schulte-card" aria-hidden="false">
+      <article class="panel game-card" id="schulte-card" role="tabpanel" aria-labelledby="nav-schulte-card" aria-hidden="true" hidden>
         <div class="section-head">
           <div>
             <h2>舒尔特方格</h2>
@@ -3452,6 +3470,7 @@
 
       <div class="record-actions">
         <button class="secondary-btn" id="export-records-btn">导出记录</button>
+        <button class="secondary-btn" id="import-records-btn">导入记录</button>
         <button class="warn-btn" id="clear-records-btn">清空记录</button>
       </div>
 
@@ -3466,10 +3485,183 @@
     </div>
   </div>
 
+
   <script>
     (function () {
       const STORAGE_KEY = "brainTrainingCampRecords";
       const MAX_RECORDS = 120;
+
+      // ---- Tauri file-based persistence ----
+      const RECORDS_FILENAME = "records.json";
+
+      let appDataDir = null;
+      let isTauri = false;
+      let tauriModules = null;
+
+      async function initPersistence() {
+        isTauri = !!(window.__TAURI__ || window.__TAURI_INTERNALS__);
+
+        if (isTauri) {
+          const path = await import("@tauri-apps/api/path");
+          const fs = await import("@tauri-apps/plugin-fs");
+          const dialog = await import("@tauri-apps/plugin-dialog");
+          appDataDir = await path.appLocalDataDir();
+          tauriModules = { path, fs, dialog };
+        }
+      }
+
+      async function loadRecordsFile() {
+        if (!isTauri) return loadRecordsLocalStorage();
+
+        try {
+          const { join } = tauriModules.path;
+          const { exists, readTextFile } = tauriModules.fs;
+
+          const filePath = await join(appDataDir, RECORDS_FILENAME);
+          if (await exists(filePath)) {
+            const content = await readTextFile(filePath);
+            return JSON.parse(content);
+          }
+
+          // First run: migrate from localStorage if available
+          const legacy = loadRecordsLocalStorage();
+          if (legacy.length > 0) {
+            await writeRecordsFile(legacy);
+          }
+          return legacy;
+        } catch (err) {
+          console.warn("loadRecordsFile failed, falling back to localStorage:", err);
+          return loadRecordsLocalStorage();
+        }
+      }
+
+      function loadRecordsLocalStorage() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? JSON.parse(raw) : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      async function writeRecordsFile(records) {
+        if (!isTauri) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+          return;
+        }
+
+        try {
+          const { join } = tauriModules.path;
+          const { writeTextFile } = tauriModules.fs;
+
+          const filePath = await join(appDataDir, RECORDS_FILENAME);
+          await writeTextFile(filePath, JSON.stringify(records, null, 2));
+        } catch (err) {
+          console.warn("writeRecordsFile failed, falling back to localStorage:", err);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+        }
+      }
+
+      // ---- Preferences persistence ----
+      const PREFS_FILENAME = "preferences.json";
+
+      var savePrefsTimer = null;
+
+      async function loadPreferencesFile() {
+        if (!isTauri) return null;
+
+        try {
+          var _join = tauriModules.path.join;
+          var _exists = tauriModules.fs.exists;
+          var _readTextFile = tauriModules.fs.readTextFile;
+
+          var filePath = await _join(appDataDir, PREFS_FILENAME);
+          if (await _exists(filePath)) {
+            var content = await _readTextFile(filePath);
+            return JSON.parse(content);
+          }
+        } catch (err) {
+          console.warn("loadPreferencesFile failed:", err);
+        }
+        return null;
+      }
+
+      async function writePreferencesFile(prefs) {
+        if (!isTauri) return;
+
+        try {
+          var _join = tauriModules.path.join;
+          var _writeTextFile = tauriModules.fs.writeTextFile;
+
+          var filePath = await _join(appDataDir, PREFS_FILENAME);
+          await _writeTextFile(filePath, JSON.stringify(prefs, null, 2));
+        } catch (err) {
+          console.warn("writePreferencesFile failed:", err);
+        }
+      }
+
+      function extractPreferences() {
+        return {
+          schulte: { size: state.schulte.size, showSelected: state.schulte.showSelected },
+          tback: { level: state.tback.level, rounds: state.tback.rounds, interval: state.tback.interval },
+          stroop: { rounds: state.stroop.rounds },
+          gonogo: { rounds: state.gonogo.rounds, interval: state.gonogo.interval },
+          antisaccade: { rounds: state.antisaccade.rounds },
+          focus: { warmupMs: state.focus.warmupMs, challengeMs: state.focus.challengeMs, intensity: state.focus.intensity },
+          reaction: { rounds: state.reaction.rounds },
+          sustained: { rounds: state.sustained.rounds, interval: state.sustained.interval, poolSize: state.sustained.poolSize, customLetters: state.sustained.customLetters },
+          breath: { cycles: state.breath.cycles, beatMs: state.breath.beatMs, inhaleBeats: state.breath.inhaleBeats, exhaleBeats: state.breath.exhaleBeats, cueMode: state.breath.cueMode }
+        };
+      }
+
+      function applyPreferences(prefs) {
+        if (!prefs) return;
+        if (prefs.schulte) { state.schulte.size = prefs.schulte.size; state.schulte.showSelected = prefs.schulte.showSelected; }
+        if (prefs.tback) { state.tback.level = prefs.tback.level; state.tback.rounds = prefs.tback.rounds; state.tback.interval = prefs.tback.interval; }
+        if (prefs.stroop) { state.stroop.rounds = prefs.stroop.rounds; }
+        if (prefs.gonogo) { state.gonogo.rounds = prefs.gonogo.rounds; state.gonogo.interval = prefs.gonogo.interval; }
+        if (prefs.antisaccade) { state.antisaccade.rounds = prefs.antisaccade.rounds; }
+        if (prefs.focus) { state.focus.warmupMs = prefs.focus.warmupMs; state.focus.challengeMs = prefs.focus.challengeMs; state.focus.intensity = prefs.focus.intensity; }
+        if (prefs.reaction) { state.reaction.rounds = prefs.reaction.rounds; }
+        if (prefs.sustained) { state.sustained.rounds = prefs.sustained.rounds; state.sustained.interval = prefs.sustained.interval; state.sustained.poolSize = prefs.sustained.poolSize; state.sustained.customLetters = prefs.sustained.customLetters; }
+        if (prefs.breath) { state.breath.cycles = prefs.breath.cycles; state.breath.beatMs = prefs.breath.beatMs; state.breath.inhaleBeats = prefs.breath.inhaleBeats; state.breath.exhaleBeats = prefs.breath.exhaleBeats; state.breath.cueMode = prefs.breath.cueMode; }
+      }
+
+      function scheduleSavePreferences() {
+        if (!isTauri) return;
+        clearTimeout(savePrefsTimer);
+        savePrefsTimer = setTimeout(async function () {
+          await writePreferencesFile(extractPreferences());
+        }, 500);
+      }
+
+      async function loadAndApplyPreferences() {
+        var prefs = await loadPreferencesFile();
+        applyPreferences(prefs);
+        syncSettingsToUI();
+      }
+
+      function syncSettingsToUI() {
+        refs.schulteSize.value = state.schulte.size;
+        refs.schulteShowSelected.value = state.schulte.showSelected ? "on" : "off";
+        refs.tbackLevel.value = state.tback.level;
+        refs.tbackRounds.value = state.tback.rounds;
+        refs.tbackInterval.value = state.tback.interval;
+        refs.stroopRounds.value = state.stroop.rounds;
+        refs.gonogoRounds.value = state.gonogo.rounds;
+        refs.gonogoInterval.value = state.gonogo.interval;
+        refs.antisaccadeRounds.value = state.antisaccade.rounds;
+        refs.focusWarmup.value = state.focus.warmupMs;
+        refs.focusChallenge.value = state.focus.challengeMs;
+        refs.focusIntensity.value = state.focus.intensity;
+        refs.reactionRounds.value = state.reaction.rounds;
+        refs.sustainedRounds.value = state.sustained.rounds;
+        refs.sustainedInterval.value = state.sustained.interval;
+        refs.sustainedPoolSize.value = state.sustained.poolSize;
+        refs.sustainedLetters.value = state.sustained.customLetters;
+        refs.breathCycles.value = state.breath.cycles;
+        refs.breathCueMode.value = state.breath.cueMode;
+      }
 
       const state = {
         records: [],
@@ -3619,7 +3811,7 @@
           cycleBeatStates: []
         },
         ui: {
-          activePanelId: "schulte-card"
+          activePanelId: "home-card"
         }
       };
 
@@ -3771,10 +3963,12 @@
         breathStatus: $("breath-status"),
 
         exportBtn: $("export-records-btn"),
+        importBtn: $("import-records-btn"),
         clearBtn: $("clear-records-btn")
       };
 
       const PANEL_IDS = [
+        "home-card",
         "schulte-card",
         "tback-card",
         "stroop-card",
@@ -3948,23 +4142,26 @@
         });
       }
 
-      function loadRecords() {
+      async function loadRecords() {
         try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          state.records = raw ? JSON.parse(raw) : [];
+          state.records = await loadRecordsFile();
         } catch (error) {
           state.records = [];
         }
       }
 
-      function saveRecords() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.records));
+      async function saveRecords() {
+        try {
+          await writeRecordsFile(state.records);
+        } catch (error) {
+          // Silent fail -- next successful save will overwrite
+        }
       }
 
-      function addRecord(record) {
+      async function addRecord(record) {
         state.records.unshift(record);
         state.records = state.records.slice(0, MAX_RECORDS);
-        saveRecords();
+        await saveRecords();
         renderRecords();
         renderStats();
       }
@@ -4087,7 +4284,7 @@
 
       function getPanelIdFromHash() {
         const hash = window.location.hash.replace(/^#/, "");
-        return panelMap.has(hash) ? hash : "schulte-card";
+        return panelMap.has(hash) ? hash : "home-card";
       }
 
       function updatePanelHash(panelId) {
@@ -4185,7 +4382,7 @@
 
       function switchTrainingPanel(panelId, options) {
         const config = options || {};
-        const nextPanelId = panelMap.has(panelId) ? panelId : "schulte-card";
+        const nextPanelId = panelMap.has(panelId) ? panelId : "home-card";
         const currentPanelId = state.ui.activePanelId;
 
         if (currentPanelId && currentPanelId !== nextPanelId && hasActiveSession(currentPanelId)) {
@@ -4242,11 +4439,13 @@
       function initSchulte() {
         refs.schulteSize.addEventListener("change", () => {
           state.schulte.size = Number(refs.schulteSize.value);
+          scheduleSavePreferences();
           resetSchulteBoard(false);
         });
 
         refs.schulteShowSelected.addEventListener("change", () => {
           state.schulte.showSelected = refs.schulteShowSelected.value !== "off";
+          scheduleSavePreferences();
           renderSchulteBoard();
         });
 
@@ -4394,6 +4593,9 @@
       }
 
       function initTBack() {
+        refs.tbackLevel.addEventListener("change", () => { scheduleSavePreferences(); });
+        refs.tbackRounds.addEventListener("change", () => { scheduleSavePreferences(); });
+        refs.tbackInterval.addEventListener("change", () => { scheduleSavePreferences(); });
         refs.tbackStartBtn.addEventListener("click", startTBackGame);
         refs.tbackMatchBtn.addEventListener("click", registerTBackMatch);
         updateTBackPanel();
@@ -4422,6 +4624,7 @@
         state.tback.level = Number(refs.tbackLevel.value);
         state.tback.rounds = Number(refs.tbackRounds.value);
         state.tback.interval = Number(refs.tbackInterval.value);
+        scheduleSavePreferences();
         state.tback.sequence = buildTBackSequence(state.tback.rounds, state.tback.level);
         state.tback.currentIndex = -1;
         state.tback.active = true;
@@ -4540,6 +4743,7 @@
         refs.stroopRounds.addEventListener("change", () => {
           if (!state.stroop.active) {
             state.stroop.rounds = Number(refs.stroopRounds.value);
+            scheduleSavePreferences();
             updateStroopPanel();
           }
         });
@@ -4709,12 +4913,14 @@
         refs.gonogoRounds.addEventListener("change", () => {
           if (!state.gonogo.active) {
             state.gonogo.rounds = Number(refs.gonogoRounds.value);
+            scheduleSavePreferences();
             updateGoNoGoPanel();
           }
         });
         refs.gonogoInterval.addEventListener("change", () => {
           if (!state.gonogo.active) {
             state.gonogo.interval = Number(refs.gonogoInterval.value);
+            scheduleSavePreferences();
           }
         });
         refs.gonogoStartBtn.addEventListener("click", startGoNoGoGame);
@@ -4888,6 +5094,7 @@
         refs.antisaccadeRounds.addEventListener("change", () => {
           if (!state.antisaccade.active) {
             state.antisaccade.rounds = Number(refs.antisaccadeRounds.value);
+            scheduleSavePreferences();
             state.antisaccade.currentIndex = -1;
             state.antisaccade.currentStimulus = null;
             state.antisaccade.hits = 0;
@@ -5398,9 +5605,9 @@
 
         buildFocusWarmupScene();
         scheduleFocusWarmupLayoutSync();
-        refs.focusWarmup.addEventListener("change", resetWhenIdle);
-        refs.focusChallenge.addEventListener("change", resetWhenIdle);
-        refs.focusIntensity.addEventListener("change", resetWhenIdle);
+        refs.focusWarmup.addEventListener("change", () => { scheduleSavePreferences(); resetWhenIdle(); });
+        refs.focusChallenge.addEventListener("change", () => { scheduleSavePreferences(); resetWhenIdle(); });
+        refs.focusIntensity.addEventListener("change", () => { scheduleSavePreferences(); resetWhenIdle(); });
         refs.focusStartBtn.addEventListener("click", startFocusGame);
         refs.focusStopBtn.addEventListener("click", () => {
           if (state.focus.active) {
@@ -5659,6 +5866,7 @@
         refs.reactionRounds.addEventListener("change", () => {
           if (!state.reaction.active) {
             state.reaction.rounds = Number(refs.reactionRounds.value);
+            scheduleSavePreferences();
             state.reaction.status = "idle";
             state.reaction.falseStarts = 0;
             state.reaction.lastMs = null;
@@ -5878,9 +6086,9 @@
           updateSustainedPanel();
         };
 
-        refs.sustainedRounds.addEventListener("change", resetWhenIdle);
-        refs.sustainedInterval.addEventListener("change", resetWhenIdle);
-        refs.sustainedPoolSize.addEventListener("change", resetWhenIdle);
+        refs.sustainedRounds.addEventListener("change", () => { scheduleSavePreferences(); resetWhenIdle(); });
+        refs.sustainedInterval.addEventListener("change", () => { scheduleSavePreferences(); resetWhenIdle(); });
+        refs.sustainedPoolSize.addEventListener("change", () => { scheduleSavePreferences(); resetWhenIdle(); });
         refs.sustainedLetters.addEventListener("input", resetWhenIdle);
         refs.sustainedLetters.addEventListener("change", () => {
           if (state.sustained.active) {
@@ -5888,6 +6096,7 @@
           }
           const normalized = sanitizeSustainedLetters(refs.sustainedLetters.value);
           refs.sustainedLetters.value = normalized.length ? normalized.join(" ") : "X";
+          scheduleSavePreferences();
           resetWhenIdle();
         });
         refs.sustainedStartBtn.addEventListener("click", startSustainedGame);
@@ -6281,8 +6490,8 @@
           updateBreathPanel();
         };
 
-        refs.breathCycles.addEventListener("change", resetWhenIdle);
-        refs.breathCueMode.addEventListener("change", resetWhenIdle);
+        refs.breathCycles.addEventListener("change", () => { scheduleSavePreferences(); resetWhenIdle(); });
+        refs.breathCueMode.addEventListener("change", () => { scheduleSavePreferences(); resetWhenIdle(); });
         refs.breathStartBtn.addEventListener("click", startBreathSession);
         refs.breathStopBtn.addEventListener("click", () => {
           if (state.breath.active) {
@@ -6555,56 +6764,144 @@
         });
       }
 
-      function exportRecords() {
+      async function exportRecords() {
         if (state.records.length === 0) {
           setStatus(refs.reactionStatus, "当前没有可导出的记录。", "warn");
           return;
         }
 
-        const blob = new Blob([JSON.stringify(state.records, null, 2)], {
-          type: "application/json;charset=utf-8"
-        });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "brain-training-records-" + new Date().toISOString().slice(0, 10) + ".json";
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        URL.revokeObjectURL(url);
+        if (isTauri) {
+          const { save } = tauriModules.dialog;
+          const { writeTextFile } = tauriModules.fs;
+
+          const defaultName = "brain-training-records-" + new Date().toISOString().slice(0, 10) + ".json";
+          const filePath = await save({
+            defaultPath: defaultName,
+            filters: [{ name: "JSON", extensions: ["json"] }]
+          });
+
+          if (!filePath) return;
+
+          await writeTextFile(filePath, JSON.stringify(state.records, null, 2));
+          setStatus(refs.reactionStatus, "记录已导出。", "ok");
+        } else {
+          const blob = new Blob([JSON.stringify(state.records, null, 2)], {
+            type: "application/json;charset=utf-8"
+          });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "brain-training-records-" + new Date().toISOString().slice(0, 10) + ".json";
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          URL.revokeObjectURL(url);
+        }
       }
 
-      function clearRecords() {
+      async function importRecords() {
+        if (isTauri) {
+          const { open } = tauriModules.dialog;
+          const { readTextFile } = tauriModules.fs;
+
+          const filePath = await open({
+            filters: [{ name: "JSON", extensions: ["json"] }],
+            multiple: false
+          });
+
+          if (!filePath) return;
+
+          try {
+            const content = await readTextFile(filePath);
+            const imported = JSON.parse(content);
+
+            if (!Array.isArray(imported)) {
+              throw new Error("文件格式不正确");
+            }
+
+            const validRecords = imported.filter(function (r) { return r && r.game && r.timestamp; });
+            if (validRecords.length === 0) {
+              setStatus(refs.reactionStatus, "文件中没有找到有效记录。", "warn");
+              return;
+            }
+
+            state.records = validRecords.concat(state.records).slice(0, MAX_RECORDS);
+            await saveRecords();
+            renderRecords();
+            renderStats();
+            setStatus(refs.reactionStatus, "成功导入 " + validRecords.length + " 条记录。", "ok");
+          } catch (e) {
+            setStatus(refs.reactionStatus, "导入失败：" + e.message, "warn");
+          }
+        } else {
+          var input = document.createElement("input");
+          input.type = "file";
+          input.accept = ".json";
+          input.onchange = async function (e) {
+            var file = e.target.files[0];
+            if (!file) return;
+            try {
+              var text = await file.text();
+              var imported = JSON.parse(text);
+              if (!Array.isArray(imported)) {
+                throw new Error("文件格式不正确");
+              }
+              var validRecords = imported.filter(function (r) { return r && r.game && r.timestamp; });
+              if (validRecords.length === 0) {
+                setStatus(refs.reactionStatus, "文件中没有找到有效记录。", "warn");
+                return;
+              }
+              state.records = validRecords.concat(state.records).slice(0, MAX_RECORDS);
+              await saveRecords();
+              renderRecords();
+              renderStats();
+              setStatus(refs.reactionStatus, "成功导入 " + validRecords.length + " 条记录。", "ok");
+            } catch (err) {
+              setStatus(refs.reactionStatus, "导入失败：" + err.message, "warn");
+            }
+          };
+          input.click();
+        }
+      }
+
+      async function clearRecords() {
         if (!window.confirm("确定要清空所有训练记录吗？")) {
           return;
         }
         state.records = [];
-        saveRecords();
+        await saveRecords();
         renderRecords();
         renderStats();
       }
 
       function initRecordsActions() {
         refs.exportBtn.addEventListener("click", exportRecords);
+        refs.importBtn.addEventListener("click", importRecords);
         refs.clearBtn.addEventListener("click", clearRecords);
       }
 
-      loadRecords();
-      renderStats();
-      renderRecords();
-      initSidebar();
-      initSchulte();
-      initTBack();
-      initStroop();
-      initGoNoGo();
-      initAntiSaccade();
-      initFocus();
-      initReaction();
-      initSustained();
-      initBreath();
-      initRecordsActions();
-      initPanelSwitcher();
+      async function boot() {
+        await initPersistence();
+        await loadRecords();
+        await loadAndApplyPreferences();
+        renderStats();
+        renderRecords();
+        initSidebar();
+        initSchulte();
+        initTBack();
+        initStroop();
+        initGoNoGo();
+        initAntiSaccade();
+        initFocus();
+        initReaction();
+        initSustained();
+        initBreath();
+        initRecordsActions();
+        initPanelSwitcher();
+      }
+      boot().catch(function (err) { console.error("boot failed:", err); });
     })();
+
   </script>
 </body>
 </html>

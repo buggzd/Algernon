@@ -304,6 +304,18 @@
       margin-top: 18px;
     }
 
+    .home-view {
+      display: none;
+    }
+
+    .home-view.is-active {
+      display: block;
+    }
+
+    .home-view[hidden] {
+      display: none !important;
+    }
+
     .stats-grid {
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       animation: rise 0.75s ease-out 0.08s both;
@@ -352,7 +364,7 @@
     .games-grid {
       display: block;
       max-width: none;
-      margin: 18px 0 0;
+      margin: 0;
       animation: rise 0.8s ease-out 0.14s both;
     }
 
