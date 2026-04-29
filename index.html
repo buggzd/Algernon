@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>脑力训练营</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <button class="sidebar-toggle" id="sidebar-toggle-btn" type="button" aria-expanded="false" aria-controls="side-rail" aria-label="打开训练侧边栏"></button>
+    <div class="sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+
+    <div class="workspace-shell">
+      <aside class="side-rail" id="side-rail" aria-label="训练项目侧边栏">
+        <div class="panel side-rail-card">
+          <button class="side-rail-close" id="side-rail-close-btn" type="button" aria-label="关闭侧边栏">×</button>
+          <div class="side-rail-head">
+            <div class="side-rail-kicker">Training Menu</div>
+            <h2>项目切换</h2>
+            <p>左侧切项目，右侧专注当前训练。训练进行中会阻止误切换。</p>
+          </div>
+
+          <div class="quick-nav" id="quick-nav" role="tablist" aria-label="训练项目切换">
+            <button class="quick-nav-tab" id="nav-schulte-card" data-panel-target="schulte-card" type="button" role="tab" aria-selected="true" aria-controls="schulte-card">
+              <span class="quick-nav-copy"><strong>舒尔特方格</strong><small>专注与视野扫描</small></span>
+              <span class="quick-nav-index">01</span>
+            </button>
+            <button class="quick-nav-tab" id="nav-tback-card" data-panel-target="tback-card" type="button" role="tab" aria-selected="false" aria-controls="tback-card" tabindex="-1">
+              <span class="quick-nav-copy"><strong>T-Back</strong><small>工作记忆节奏训练</small></span>
+              <span class="quick-nav-index">02</span>
+            </button>
+            <button class="quick-nav-tab" id="nav-stroop-card" data-panel-target="stroop-card" type="button" role="tab" aria-selected="false" aria-controls="stroop-card" tabindex="-1">
+              <span class="quick-nav-copy"><strong>Stroop</strong><small>看颜色，不看字义</small></span>
+              <span class="quick-nav-index">03</span>
+            </button>
+            <button class="quick-nav-tab" id="nav-gonogo-card" data-panel-target="gonogo-card" type="button" role="tab" aria-selected="false" aria-controls="gonogo-card" tabindex="-1">
+              <span class="quick-nav-copy"><strong>Go / No-Go</strong><small>冲动克制与抑制</small></span>
+              <span class="quick-nav-index">04</span>
+            </button>
+            <button class="quick-nav-tab" id="nav-antisaccade-card" data-panel-target="antisaccade-card" type="button" role="tab" aria-selected="false" aria-controls="antisaccade-card" tabindex="-1">
+              <span class="quick-nav-copy"><strong>反扫视</strong><small>看反方向，再回中</small></span>
+              <span class="quick-nav-index">05</span>
+            </button>
+            <button class="quick-nav-tab" id="nav-focus-card" data-panel-target="focus-card" type="button" role="tab" aria-selected="false" aria-controls="focus-card" tabindex="-1">
+              <span class="quick-nav-copy"><strong>凝视专注</strong><small>中心定视，抗外围干扰</small></span>
+              <span class="quick-nav-index">06</span>
+            </button>
+            <button class="quick-nav-tab" id="nav-reaction-card" data-panel-target="reaction-card" type="button" role="tab" aria-selected="false" aria-controls="reaction-card" tabindex="-1">
+              <span class="quick-nav-copy"><strong>反应时</strong><small>一次开始，连续多轮</small></span>
+              <span class="quick-nav-index">07</span>
+            </button>
+            <button class="quick-nav-tab" id="nav-sustained-card" data-panel-target="sustained-card" type="button" role="tab" aria-selected="false" aria-controls="sustained-card" tabindex="-1">
+              <span class="quick-nav-copy"><strong>持续注意</strong><small>只点目标字母</small></span>
+              <span class="quick-nav-index">08</span>
+            </button>
+            <button class="quick-nav-tab" id="nav-breath-card" data-panel-target="breath-card" type="button" role="tab" aria-selected="false" aria-controls="breath-card" tabindex="-1">
+              <span class="quick-nav-copy"><strong>节拍呼吸</strong><small>吸 4 秒，呼 6 秒</small></span>
+              <span class="quick-nav-index">09</span>
+            </button>
+            <button class="quick-nav-tab" id="nav-records-card" data-panel-target="records-card" type="button" role="tab" aria-selected="false" aria-controls="records-card" tabindex="-1">
+              <span class="quick-nav-copy"><strong>训练记录</strong><small>查看、导出、清空</small></span>
+              <span class="quick-nav-index">10</span>
+            </button>
+          </div>
+
+          <div class="side-rail-note">手机端也保持侧边栏形态，点击左上角按钮呼出；桌面端则固定在左边，切项目更直接。</div>
+        </div>
+      </aside>
+
+      <main class="main-stage">
+        <section class="hero">
+          <div class="eyebrow">离线单文件 · 本地记录 · 手机可用</div>
+          <h1>脑力训练营</h1>
+          <p>一个专门给本地使用设计的轻量训练页面，包含舒尔特方格、T-Back 工作记忆、Stroop 斯特鲁普色词测试、Go/No-Go 冲动克制、反扫视、凝视专注抗干扰、多轮反应时训练、持续注意力训练，以及吸 4 秒呼 6 秒的节拍呼吸慢练。所有记录默认保存在当前浏览器的本地存储里，不依赖网络。</p>
+        </section>
+
+        <section class="stats-grid" aria-label="训练总览">
+      <article class="panel stat-card">
+        <h3>总训练次数</h3>
+        <div class="stat-value" id="total-sessions">0</div>
+        <div class="stat-note">所有模块累计记录</div>
+      </article>
+      <article class="panel stat-card">
+        <h3>累计训练时长</h3>
+        <div class="stat-value" id="total-duration">0s</div>
+        <div class="stat-note">按每次游戏时长合计</div>
+      </article>
+      <article class="panel stat-card">
+        <h3>舒尔特最佳</h3>
+        <div class="stat-value" id="best-schulte">-</div>
+        <div class="stat-note">越短越好</div>
+      </article>
+      <article class="panel stat-card">
+        <h3>T-Back 最佳</h3>
+        <div class="stat-value" id="best-tback">-</div>
+        <div class="stat-note">按准确率统计</div>
+      </article>
+        </section>
+
+        <section class="games-grid">
+      <article class="panel game-card is-active" id="schulte-card" role="tabpanel" aria-labelledby="nav-schulte-card" aria-hidden="false">
+        <div class="section-head">
+          <div>
+            <h2>舒尔特方格</h2>
+            <p>按顺序点选数字，记录完整用时。适合做专注热身和扫视速度训练。</p>
+          </div>
+          <div class="badge">扫描</div>
+        </div>
+
+        <div class="controls">
+          <div class="field-grid">
+            <div class="field">
+              <label for="schulte-size">方格尺寸</label>
+              <select id="schulte-size">
+                <option value="4">4 × 4</option>
+                <option value="5" selected>5 × 5</option>
+                <option value="6">6 × 6</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="schulte-show-selected">已点选显示</label>
+              <select id="schulte-show-selected">
+                <option value="on" selected>是</option>
+                <option value="off">否</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>当前状态</label>
+              <div class="ghost-box" id="schulte-overview">未开始</div>
+            </div>
+          </div>
+
+          <div class="live-row" aria-live="polite">
+            <div class="live-chip"><span>目标数字</span><strong id="schulte-target">1</strong></div>
+            <div class="live-chip"><span>已用时间</span><strong id="schulte-timer">0.00s</strong></div>
+            <div class="live-chip"><span>完成进度</span><strong id="schulte-progress">0%</strong></div>
+          </div>
+
+          <div class="schulte-stage">
+            <div class="status" id="schulte-status">点击“开始新一局”后按从 1 开始的顺序依次点选。</div>
+            <div class="button-row">
+              <button class="primary-btn" id="schulte-start-btn">开始新一局</button>
+              <button class="secondary-btn" id="schulte-reset-btn">重置棋盘</button>
+            </div>
+            <div class="schulte-board" id="schulte-board" aria-label="舒尔特方格棋盘"></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel game-card" id="tback-card" role="tabpanel" aria-labelledby="nav-tback-card" aria-hidden="true" hidden>
+        <div class="section-head">
+          <div>
+            <h2>T-Back / N-Back</h2>
+            <p>按固定节奏出现字母。如果当前字母和 N 步之前相同，就点一次“匹配”。</p>
+          </div>
+          <div class="badge">记忆</div>
+        </div>
+
+        <div class="controls">
+          <div class="field-grid">
+            <div class="field">
+              <label for="tback-level">级别 N</label>
+              <select id="tback-level">
+                <option value="2" selected>2-Back</option>
+                <option value="3">3-Back</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="tback-rounds">轮次数</label>
+              <select id="tback-rounds">
+                <option value="18">18 轮</option>
+                <option value="24" selected>24 轮</option>
+                <option value="30">30 轮</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="tback-interval">节奏速度</label>
+            <select id="tback-interval">
+              <option value="2200">慢速 · 2.2 秒</option>
+              <option value="1800" selected>标准 · 1.8 秒</option>
+              <option value="1400">快速 · 1.4 秒</option>
+            </select>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" id="tback-start-btn">开始训练</button>
+            <button class="accent-btn" id="tback-match-btn" disabled>匹配</button>
+          </div>
+
+          <div class="tback-stage">
+            <div class="memory-plate" aria-live="polite">
+              <div>
+                <div class="memory-symbol" id="tback-symbol">-</div>
+                <div class="memory-hint" id="tback-hint">准备好后开始，按“匹配”来标记与 N 步前相同的字母。</div>
+              </div>
+            </div>
+            <div class="progress-bar" aria-hidden="true">
+              <div class="progress-fill" id="tback-progress"></div>
+            </div>
+            <div class="live-row">
+              <div class="live-chip"><span>当前轮次</span><strong id="tback-step">0 / 0</strong></div>
+              <div class="live-chip"><span>命中率</span><strong id="tback-accuracy">0%</strong></div>
+              <div class="live-chip"><span>误报数</span><strong id="tback-false">0</strong></div>
+            </div>
+          </div>
+
+          <div class="status" id="tback-status">建议先从 2-Back 开始，保持稳定节奏，不要抢点。</div>
+        </div>
+      </article>
+
+      <article class="panel game-card" id="stroop-card" role="tabpanel" aria-labelledby="nav-stroop-card" aria-hidden="true" hidden>
+        <div class="section-head">
+          <div>
+            <h2>Stroop 斯特鲁普</h2>
+            <p>文字内容会干扰你的判断。你的任务不是读字，而是判断文字真正显示出来的颜色。</p>
+          </div>
+          <div class="badge">抑制</div>
+        </div>
+
+        <div class="controls">
+          <div class="field-grid">
+            <div class="field">
+              <label for="stroop-rounds">轮次数</label>
+              <select id="stroop-rounds">
+                <option value="16">16 轮</option>
+                <option value="24" selected>24 轮</option>
+                <option value="32">32 轮</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>当前规则</label>
+              <div class="ghost-box" id="stroop-rule">看字体颜色，不看文字内容</div>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" id="stroop-start-btn">开始测试</button>
+          </div>
+
+          <div class="stroop-display" id="stroop-display" aria-live="polite">
+            <div>
+              <div class="stroop-word" id="stroop-word">准备</div>
+              <div class="memory-hint" id="stroop-hint">点击开始后，按文字显示的颜色作答。</div>
+            </div>
+          </div>
+
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="stroop-progress"></div>
+          </div>
+
+          <div class="color-grid" id="stroop-options"></div>
+
+          <div class="live-row">
+            <div class="live-chip"><span>当前轮次</span><strong id="stroop-step">0 / 24</strong></div>
+            <div class="live-chip"><span>正确率</span><strong id="stroop-accuracy">0%</strong></div>
+            <div class="live-chip"><span>平均反应</span><strong id="stroop-avg-rt">-</strong></div>
+          </div>
+
+          <div class="status" id="stroop-status">建议一开始先求稳，不要被字义带跑。</div>
+        </div>
+      </article>
+
+      <article class="panel game-card" id="gonogo-card" role="tabpanel" aria-labelledby="nav-gonogo-card" aria-hidden="true" hidden>
+        <div class="section-head">
+          <div>
+            <h2>Go / No-Go</h2>
+            <p>看到 <strong>GO</strong> 时出手，看到 <strong>NO-GO</strong> 时必须忍住。重点是抑制冲动，不是乱按。</p>
+          </div>
+          <div class="badge">克制</div>
+        </div>
+
+        <div class="controls">
+          <div class="field-grid">
+            <div class="field">
+              <label for="gonogo-rounds">轮次数</label>
+              <select id="gonogo-rounds">
+                <option value="20">20 轮</option>
+                <option value="30" selected>30 轮</option>
+                <option value="40">40 轮</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="gonogo-interval">节奏速度</label>
+              <select id="gonogo-interval">
+                <option value="1300">慢速 · 1.3 秒</option>
+                <option value="1000" selected>标准 · 1.0 秒</option>
+                <option value="800">快速 · 0.8 秒</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" id="gonogo-start-btn">开始训练</button>
+            <button class="accent-btn" id="gonogo-act-btn" disabled>出手</button>
+          </div>
+
+          <div class="gng-display" id="gonogo-display" aria-live="polite">
+            <div>
+              <div class="gng-symbol" id="gonogo-symbol">-</div>
+              <div class="memory-hint" id="gonogo-hint">看到 GO 再按“出手”，NO-GO 必须忍住。</div>
+            </div>
+          </div>
+
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="gonogo-progress"></div>
+          </div>
+
+          <div class="live-row">
+            <div class="live-chip"><span>当前轮次</span><strong id="gonogo-step">0 / 30</strong></div>
+            <div class="live-chip"><span>总准确率</span><strong id="gonogo-accuracy">0%</strong></div>
+            <div class="live-chip"><span>抑制成功率</span><strong id="gonogo-inhibition">-</strong></div>
+          </div>
+
+          <div class="status" id="gonogo-status">先看清刺激，再决定是否出手。误按比慢一点更伤成绩。</div>
+        </div>
+      </article>
+
+      <article class="panel game-card" id="antisaccade-card" role="tabpanel" aria-labelledby="nav-antisaccade-card" aria-hidden="true" hidden>
+        <div class="section-head">
+          <div>
+            <h2>反扫视训练</h2>
+            <p>侧边刺激一出现，先把视线甩向反方向，再回到中间定住，最后点击你看的那一侧完成记录。</p>
+          </div>
+          <div class="badge">眼控</div>
+        </div>
+
+        <div class="controls">
+          <div class="field-grid">
+            <div class="field">
+              <label for="antisaccade-rounds">轮次数</label>
+              <select id="antisaccade-rounds">
+                <option value="12">12 轮</option>
+                <option value="18" selected>18 轮</option>
+                <option value="24">24 轮</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>当前规则</label>
+              <div class="ghost-box">侧边刺激出现 -> 看反方向 -> 回中 -> 点相反侧</div>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" id="antisaccade-start-btn">开始训练</button>
+          </div>
+
+          <div class="saccade-board" aria-live="polite">
+            <button class="saccade-node" id="antisaccade-left-btn" type="button" disabled>
+              <span class="saccade-symbol" id="antisaccade-left-symbol">◐</span>
+              <span class="tiny">左侧图案</span>
+            </button>
+            <div class="saccade-node center" id="antisaccade-center-node">
+              <span class="saccade-symbol" id="antisaccade-center-symbol">◎</span>
+              <span class="tiny">回到中心</span>
+            </div>
+            <button class="saccade-node" id="antisaccade-right-btn" type="button" disabled>
+              <span class="saccade-symbol" id="antisaccade-right-symbol">◑</span>
+              <span class="tiny">右侧图案</span>
+            </button>
+          </div>
+
+          <div class="memory-hint" id="antisaccade-hint">看到哪边动，就先看反方向，再把视线带回中间，最后点击你看的那一侧。</div>
+
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="antisaccade-progress"></div>
+          </div>
+
+          <div class="live-row">
+            <div class="live-chip"><span>当前轮次</span><strong id="antisaccade-step">0 / 18</strong></div>
+            <div class="live-chip"><span>正确率</span><strong id="antisaccade-accuracy">0%</strong></div>
+            <div class="live-chip"><span>平均响应</span><strong id="antisaccade-avg">-</strong></div>
+          </div>
+
+          <div class="status" id="antisaccade-status">重点不是快按，而是先完成“反方向看一眼，再回中心”的动作序列。</div>
+        </div>
+      </article>
+
+      <article class="panel game-card" id="focus-card" role="tabpanel" aria-labelledby="nav-focus-card" aria-hidden="true" hidden>
+        <div class="section-head">
+          <div>
+            <h2>凝视专注抗干扰</h2>
+            <p>先做基于 Troxler / MIB 视错觉的热身：中心绿点位于等边三角黄点中心，外围粗线红色图阵始终存在，只通过稳定注视与缓慢旋转增强主观淡化；再切到红点抗干扰阶段，周围会不断出现动态干扰项。</p>
+          </div>
+          <div class="badge">定视</div>
+        </div>
+
+        <div class="controls">
+          <div class="field-grid">
+            <div class="field">
+              <label for="focus-warmup">热身时长</label>
+              <select id="focus-warmup">
+                <option value="12000">12 秒</option>
+                <option value="18000" selected>18 秒</option>
+                <option value="25000">25 秒</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="focus-challenge">抗干扰时长</label>
+              <select id="focus-challenge">
+                <option value="20000">20 秒</option>
+                <option value="30000" selected>30 秒</option>
+                <option value="45000">45 秒</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="focus-intensity">干扰强度</label>
+              <select id="focus-intensity">
+                <option value="gentle">柔和</option>
+                <option value="standard" selected>标准</option>
+                <option value="intense">猛烈</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>当前流程</label>
+              <div class="ghost-box">绿点热身 -> 红点抗干扰 -> 完成后自动写入记录</div>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" id="focus-start-btn" type="button">开始双阶段训练</button>
+            <button class="secondary-btn" id="focus-stop-btn" type="button" disabled>提前结束</button>
+            <button class="inline-btn" id="focus-fullscreen-btn" type="button" aria-pressed="false">训练画面全屏</button>
+          </div>
+
+          <div class="focus-stage" id="focus-stage">
+            <div class="focus-stage-overlay">
+              <button class="focus-stage-exit-btn" id="focus-fullscreen-exit-btn" type="button">退出全屏</button>
+            </div>
+
+            <div class="focus-arena" id="focus-arena" aria-live="polite">
+              <div class="focus-layer focus-warmup-layer" id="focus-warmup-layer" aria-hidden="true">
+                <div class="focus-troxler-scene">
+                  <div class="focus-troxler-grid-shell" id="focus-troxler-grid-shell">
+                    <div class="focus-troxler-grid" id="focus-troxler-grid"></div>
+                  </div>
+                  <div class="focus-troxler-triangle" id="focus-troxler-triangle">
+                    <div class="focus-anchor-dot anchor-top"></div>
+                    <div class="focus-anchor-dot anchor-left"></div>
+                    <div class="focus-anchor-dot anchor-right"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="focus-layer focus-distractor-layer" id="focus-distractor-layer"></div>
+              <div class="focus-center-wrap">
+                <div class="focus-crosshair"></div>
+                <div class="focus-fixation-dot" id="focus-center-dot"></div>
+              </div>
+            </div>
+
+            <div class="focus-caption" id="focus-caption">先盯住中心绿点，不要来回确认外围黄点。它们和红色图阵始终都在。</div>
+          </div>
+
+          <div class="memory-hint" id="focus-hint">热身阶段请稳盯中心绿点，不要检查外围黄点还在不在。训练中尽量不要碰画面。</div>
+
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="focus-progress"></div>
+          </div>
+
+          <div class="live-row">
+            <div class="live-chip"><span>当前阶段</span><strong id="focus-phase">未开始</strong></div>
+            <div class="live-chip"><span>阶段剩余</span><strong id="focus-countdown">-</strong></div>
+            <div class="live-chip"><span>干扰波次</span><strong id="focus-waves">0</strong></div>
+            <div class="live-chip"><span>触碰中断</span><strong id="focus-breaks">0</strong></div>
+          </div>
+
+          <div class="status" id="focus-status">热身会依赖真实的视觉适应错觉，不会由程序定时把黄点或图阵隐藏。</div>
+        </div>
+      </article>
+
+      <article class="panel game-card" id="reaction-card" role="tabpanel" aria-labelledby="nav-reaction-card" aria-hidden="true" hidden>
+        <div class="section-head">
+          <div>
+            <h2>反应时训练</h2>
+            <p>一次开始可连续完成多轮。每轮都要先等待，再在颜色变绿时尽快点击；过早点击会判定为抢跑并重来。</p>
+          </div>
+          <div class="badge">速度</div>
+        </div>
+
+        <div class="controls">
+          <div class="field-grid">
+            <div class="field">
+              <label for="reaction-rounds">轮次数</label>
+              <select id="reaction-rounds">
+                <option value="5">5 轮</option>
+                <option value="8" selected>8 轮</option>
+                <option value="12">12 轮</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>训练方式</label>
+              <div class="ghost-box">开始一次，自动连续多轮</div>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" id="reaction-start-btn">开始整组测试</button>
+          </div>
+
+          <div class="reaction-zone" id="reaction-zone" tabindex="0" role="button" aria-live="polite">
+            <div>
+              <h3 id="reaction-title">等待开始</h3>
+              <p class="memory-hint" id="reaction-text">点击“开始整组测试”，看到绿色后立刻点这里。</p>
+            </div>
+          </div>
+
+          <div class="live-row">
+            <div class="live-chip"><span>当前轮次</span><strong id="reaction-step">0 / 8</strong></div>
+            <div class="live-chip"><span>最近成绩</span><strong id="reaction-last">-</strong></div>
+            <div class="live-chip"><span>会话平均</span><strong id="reaction-avg">-</strong></div>
+            <div class="live-chip"><span>历史最佳</span><strong id="reaction-best">-</strong></div>
+            <div class="live-chip"><span>抢跑次数</span><strong id="reaction-false-count">0</strong></div>
+          </div>
+
+          <div class="status" id="reaction-status">点击“开始整组测试”后请耐心等待颜色切换。</div>
+        </div>
+      </article>
+
+      <article class="panel game-card" id="sustained-card" role="tabpanel" aria-labelledby="nav-sustained-card" aria-hidden="true" hidden>
+        <div class="section-head">
+          <div>
+            <h2>持续注意力训练</h2>
+            <p>系统会从 26 个字母与 +、-、%、# 中混合呈现刺激。只有出现你设定的目标字母时才点，其他字母和符号都不要点。</p>
+          </div>
+          <div class="badge">警觉</div>
+        </div>
+
+        <div class="controls">
+          <div class="field-grid">
+            <div class="field">
+              <label for="sustained-rounds">刺激数量</label>
+              <select id="sustained-rounds">
+                <option value="48">48 个</option>
+                <option value="72" selected>72 个</option>
+                <option value="96">96 个</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="sustained-interval">呈现节奏</label>
+              <select id="sustained-interval">
+                <option value="700">快节奏</option>
+                <option value="900" selected>标准</option>
+                <option value="1200">慢节奏</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="sustained-pool-size">目标字母个数</label>
+              <select id="sustained-pool-size">
+                <option value="1" selected>1 个</option>
+                <option value="2">2 个</option>
+                <option value="3">3 个</option>
+                <option value="4">4 个</option>
+                <option value="5">5 个</option>
+                <option value="6">6 个</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="sustained-letters">目标字母</label>
+              <input id="sustained-letters" type="text" inputmode="latin" autocomplete="off" spellcheck="false" value="X" placeholder="例如 X 或 A S X">
+              <div class="tiny">可用空格、逗号或直接连写，例如 `X`、`A S X`、`ASX`。</div>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label>当前规则</label>
+              <div class="ghost-box">只有目标字母出现时才点，其他字母和符号都不点</div>
+            </div>
+            <div class="field">
+              <label>当前目标字母</label>
+              <div class="ghost-box" id="sustained-pool">当前目标字母：X</div>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" id="sustained-start-btn">开始持续注意力训练</button>
+          </div>
+
+          <div class="sustained-zone" id="sustained-zone" tabindex="0" role="button" aria-live="polite">
+            <div class="sustained-stimulus" id="sustained-stimulus">准备</div>
+            <div class="sustained-subtext" id="sustained-text">点击开始后，字符会连续出现。看到目标字母就点这里，看到其他字母或符号就保持不动。</div>
+          </div>
+
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="sustained-progress"></div>
+          </div>
+
+          <div class="live-row">
+            <div class="live-chip"><span>当前刺激</span><strong id="sustained-step">0 / 72</strong></div>
+            <div class="live-chip"><span>总准确率</span><strong id="sustained-accuracy">0%</strong></div>
+            <div class="live-chip"><span>平均反应</span><strong id="sustained-avg-rt">-</strong></div>
+            <div class="live-chip"><span>漏按</span><strong id="sustained-misses">0</strong></div>
+            <div class="live-chip"><span>误按</span><strong id="sustained-false">0</strong></div>
+          </div>
+
+          <div class="status" id="sustained-status">保持一条规则即可：只有目标字母点，其他字母和符号都别点。开始后会自动连续呈现整组刺激。</div>
+        </div>
+      </article>
+
+      <article class="panel game-card" id="breath-card" role="tabpanel" aria-labelledby="nav-breath-card" aria-hidden="true" hidden>
+        <div class="section-head">
+          <div>
+            <h2>抑制呼吸与节拍慢运动</h2>
+            <p>跟着节拍器轻点屏幕，把呼吸和动作都压慢。固定 1 拍 = 1 秒，吸气 4 拍，呼气 6 拍，整组会连续循环。</p>
+          </div>
+          <div class="badge">节律</div>
+        </div>
+
+        <div class="controls">
+          <div class="field-grid">
+            <div class="field">
+              <label for="breath-cycles">循环轮数</label>
+              <select id="breath-cycles">
+                <option value="4">4 轮</option>
+                <option value="6" selected>6 轮</option>
+                <option value="8">8 轮</option>
+                <option value="10">10 轮</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="breath-cue-mode">提示方式</label>
+              <select id="breath-cue-mode">
+                <option value="audio" selected>节拍音 + 视觉</option>
+                <option value="visual">仅视觉</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label>当前节奏</label>
+              <div class="ghost-box">吸气 4 秒 -> 呼气 6 秒 -> 自动循环</div>
+            </div>
+            <div class="field">
+              <label>动作要求</label>
+              <div class="ghost-box">每拍轻点一次即可，动作越小越好，不用猛点</div>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" id="breath-start-btn">开始节拍跟练</button>
+            <button class="secondary-btn" id="breath-stop-btn" disabled>提前结束</button>
+          </div>
+
+          <div class="breath-zone" id="breath-zone" tabindex="0" role="button" aria-live="polite">
+            <div class="breath-orb" id="breath-orb">
+              <div class="breath-word" id="breath-word">准备</div>
+            </div>
+            <div class="breath-track" id="breath-track" aria-hidden="true"></div>
+            <div class="breath-cycle-note" id="breath-subtext">点击开始后，跟着每一拍轻点一下，吸 4 秒，呼 6 秒。</div>
+          </div>
+
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="breath-progress"></div>
+          </div>
+
+          <div class="live-row">
+            <div class="live-chip"><span>当前阶段</span><strong id="breath-phase">未开始</strong></div>
+            <div class="live-chip"><span>当前拍</span><strong id="breath-beat">0 / 10</strong></div>
+            <div class="live-chip"><span>已完成轮次</span><strong id="breath-cycles-done">0 / 6</strong></div>
+            <div class="live-chip"><span>节拍命中</span><strong id="breath-accuracy">0%</strong></div>
+            <div class="live-chip"><span>平均偏差</span><strong id="breath-avg-delta">-</strong></div>
+            <div class="live-chip"><span>漏 / 偏拍</span><strong id="breath-errors">0 / 0</strong></div>
+          </div>
+
+          <div class="status" id="breath-status">每拍轻点一次，吸气 4 拍，呼气 6 拍，动作尽量小。</div>
+        </div>
+      </article>
+
+      <article class="panel game-card record-panel" id="records-card" role="tabpanel" aria-labelledby="nav-records-card" aria-hidden="true" hidden>
+      <div class="section-head">
+        <div>
+          <h2>训练记录</h2>
+          <p>每次完成训练都会自动写入当前浏览器的本地存储。你可以导出成 JSON 备份，也可以一键清空。</p>
+        </div>
+        <div class="badge">本地</div>
+      </div>
+
+      <div class="record-actions">
+        <button class="secondary-btn" id="export-records-btn">导出记录</button>
+        <button class="secondary-btn" id="import-records-btn">导入记录</button>
+        <button class="warn-btn" id="clear-records-btn">清空记录</button>
+      </div>
+
+      <div class="history-list" id="history-list">
+        <div class="empty-state">暂无记录，先开始一次训练。</div>
+      </div>
+
+      <p class="footer-note">提示：如果你在 Acode 里本地打开，同一个浏览器内核通常会保留这些记录；更换应用或清缓存后数据可能会丢失，建议定期导出。</p>
+      </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
