@@ -2611,6 +2611,66 @@
       background: rgba(12, 10, 9, 0.32);
     }
 
+    .side-rail {
+      max-height: calc(100dvh - (var(--spacing-xl) * 2));
+    }
+
+    .side-rail-card {
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100dvh - (var(--spacing-xl) * 2));
+      overflow: hidden;
+    }
+
+    .quick-nav {
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-right: var(--spacing-xxs);
+      scrollbar-gutter: stable;
+    }
+
+    .quick-nav::-webkit-scrollbar,
+    .history-list::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .quick-nav::-webkit-scrollbar-track,
+    .history-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .quick-nav::-webkit-scrollbar-thumb,
+    .history-list::-webkit-scrollbar-thumb {
+      border: 2px solid transparent;
+      border-radius: var(--rounded-pill);
+      background: var(--colors-hairline-strong);
+      background-clip: padding-box;
+    }
+
+    .side-rail-note {
+      flex: none;
+    }
+
+    .record-panel .history-list {
+      max-height: min(54vh, 520px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-right: var(--spacing-xs);
+      scrollbar-gutter: stable;
+    }
+
+    .game-card > .section-head {
+      position: sticky;
+      top: var(--spacing-xl);
+      z-index: 5;
+      margin: calc(var(--spacing-lg) * -1) calc(var(--spacing-lg) * -1) 0;
+      padding: var(--spacing-lg);
+      border-radius: var(--rounded-xl) var(--rounded-xl) 0 0;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+    }
+
     @media (max-width: 1120px) {
       .stats-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2630,6 +2690,20 @@
       .side-rail-card {
         border-radius: 0 var(--rounded-xxl) var(--rounded-xxl) 0;
         background: rgba(255, 255, 255, 0.98);
+        height: 100%;
+        max-height: none;
+      }
+
+      .side-rail {
+        overflow: hidden;
+      }
+
+      .quick-nav {
+        flex: 1 1 auto;
+      }
+
+      .game-card > .section-head {
+        top: 0;
       }
     }
 
@@ -2665,6 +2739,11 @@
       }
 
       .panel {
+        padding: var(--spacing-base);
+      }
+
+      .game-card > .section-head {
+        margin: calc(var(--spacing-base) * -1) calc(var(--spacing-base) * -1) 0;
         padding: var(--spacing-base);
       }
 
