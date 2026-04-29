@@ -333,6 +333,7 @@
         sidebarScrim: $("sidebar-scrim"),
         sideRail: $("side-rail"),
         sideRailClose: $("side-rail-close-btn"),
+        sideRailCollapse: $("side-rail-collapse-btn"),
 
         totalSessions: $("total-sessions"),
         totalDuration: $("total-duration"),
@@ -780,17 +781,115 @@
       function syncSidebarViewportMode() {
         if (!isSidebarDrawerMode()) {
           closeSidebar();
+        } else {
+          document.body.classList.remove("sidebar-collapsed");
+          if (refs.sideRailCollapse) {
+            refs.sideRailCollapse.setAttribute("aria-expanded", "true");
+            refs.sideRailCollapse.setAttribute("aria-label", "收起侧边栏");
+          }
+        }
+      }
+
+      function toggleSidebarCollapsed() {
+        if (isSidebarDrawerMode()) {
+          return;
+        }
+        const collapsed = !document.body.classList.contains("sidebar-collapsed");
+        document.body.classList.toggle("sidebar-collapsed", collapsed);
+        if (refs.sideRailCollapse) {
+          refs.sideRailCollapse.setAttribute("aria-expanded", collapsed ? "false" : "true");
+          refs.sideRailCollapse.setAttribute("aria-label", collapsed ? "展开侧边栏" : "收起侧边栏");
         }
       }
 
       function initSidebar() {
         refs.sidebarToggle.addEventListener("click", toggleSidebar);
         refs.sideRailClose.addEventListener("click", closeSidebar);
+        if (refs.sideRailCollapse) {
+          refs.sideRailCollapse.addEventListener("click", toggleSidebarCollapsed);
+        }
         refs.sidebarScrim.addEventListener("click", closeSidebar);
         window.addEventListener("resize", syncSidebarViewportMode);
         window.addEventListener("orientationchange", syncSidebarViewportMode);
         document.addEventListener("keydown", handleSidebarEscape);
         syncSidebarViewportMode();
+      }
+
+      function createSettingsPanel(panelId, itemCount) {
+        const panel = $(panelId);
+        if (!panel) return;
+
+        const controls = panel.querySelector(".controls");
+        if (!controls) return;
+
+        const items = Array.from(controls.children).slice(0, itemCount);
+        if (items.length === 0) return;
+
+        const details = document.createElement("details");
+        details.className = "module-settings";
+
+        const summary = document.createElement("summary");
+        summary.className = "module-settings-summary";
+        summary.innerHTML = '<span>训练设置</span><strong>调整</strong>';
+
+        const body = document.createElement("div");
+        body.className = "module-settings-body";
+
+        details.appendChild(summary);
+        details.appendChild(body);
+        controls.insertBefore(details, controls.firstElementChild);
+
+        items.forEach((item) => {
+          body.appendChild(item);
+        });
+      }
+
+      function initModuleSettings() {
+        [
+          ["schulte-card", 1],
+          ["tback-card", 2],
+          ["stroop-card", 1],
+          ["gonogo-card", 1],
+          ["antisaccade-card", 1],
+          ["focus-card", 2],
+          ["reaction-card", 1],
+          ["sustained-card", 3],
+          ["breath-card", 2]
+        ].forEach(([panelId, itemCount]) => {
+          createSettingsPanel(panelId, itemCount);
+        });
+      }
+
+      function syncPanelScrollState(panel) {
+        if (!panel) return;
+        const mainStage = document.querySelector(".main-stage");
+        const scrollTop = Math.max(
+          panel.scrollTop || 0,
+          mainStage ? mainStage.scrollTop || 0 : 0,
+          document.documentElement.scrollTop || 0,
+          document.body.scrollTop || 0,
+          window.scrollY || 0
+        );
+        panel.classList.toggle("is-scrolled", scrollTop > 16);
+      }
+
+      function initPanelScrollStates() {
+        const syncActive = () => {
+          syncPanelScrollState(panelMap.get(state.ui.activePanelId));
+        };
+
+        panelMap.forEach((panel) => {
+          if (!panel) return;
+          panel.addEventListener("scroll", () => syncPanelScrollState(panel), { passive: true });
+          syncPanelScrollState(panel);
+        });
+
+        const mainStage = document.querySelector(".main-stage");
+        if (mainStage) {
+          mainStage.addEventListener("scroll", syncActive, { passive: true });
+        }
+        window.addEventListener("scroll", syncActive, { passive: true });
+        document.addEventListener("scroll", syncActive, true);
       }
 
       function getPanelIdFromHash() {
@@ -923,10 +1022,18 @@
           panel.hidden = !active;
           panel.classList.toggle("is-active", active);
           panel.setAttribute("aria-hidden", active ? "false" : "true");
+          if (active) {
+            panel.scrollTop = 0;
+            syncPanelScrollState(panel);
+          }
         });
 
         if (config.updateHash !== false) {
           updatePanelHash(nextPanelId);
+        }
+
+        if (window.innerWidth > 980) {
+          window.scrollTo({ top: 0, left: 0, behavior: "auto" });
         }
 
         closeSidebar();
@@ -2035,22 +2142,7 @@
           return;
         }
 
-        const nativeRequested = requestElementFullscreen(refs.focusStage);
-        if (!nativeRequested) {
-          setFocusPseudoFullscreen(true);
-          syncFocusFullscreenUi();
-          refreshFocusViewportLayout();
-          return;
-        }
-
-        window.setTimeout(() => {
-          if (!isFocusNativeFullscreen() && !isFocusPseudoFullscreen()) {
-            setFocusPseudoFullscreen(true);
-            syncFocusFullscreenUi();
-            refreshFocusViewportLayout();
-          }
-        }, 220);
-
+        setFocusPseudoFullscreen(true);
         syncFocusFullscreenUi();
         refreshFocusViewportLayout();
       }
@@ -3408,6 +3500,8 @@
         initSustained();
         initBreath();
         initRecordsActions();
+        initModuleSettings();
+        initPanelScrollStates();
         initPanelSwitcher();
       }
       boot().catch(function (err) { console.error("boot failed:", err); });

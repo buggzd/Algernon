@@ -86,7 +86,8 @@
     }
 
     .sidebar-toggle,
-    .side-rail-close {
+    .side-rail-close,
+    .side-rail-collapse-btn {
       display: none;
     }
 
@@ -115,6 +116,13 @@
     .side-rail-head {
       display: grid;
       gap: 10px;
+    }
+
+    .side-rail-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
     .side-rail-kicker {
@@ -1013,27 +1021,26 @@
     .focus-stage:fullscreen,
     .focus-stage:-webkit-full-screen {
       position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
+      inset: 0;
       z-index: 9999;
-      width: auto;
-      height: auto;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
       margin: 0;
       padding:
-        calc(env(safe-area-inset-top, 0px) + 16px)
-        calc(env(safe-area-inset-right, 0px) + 16px)
-        calc(env(safe-area-inset-bottom, 0px) + 18px)
-        calc(env(safe-area-inset-left, 0px) + 16px);
-      overflow: auto;
+        calc(env(safe-area-inset-top, 0px) + 24px)
+        calc(env(safe-area-inset-right, 0px) + 24px)
+        calc(env(safe-area-inset-bottom, 0px) + 24px)
+        calc(env(safe-area-inset-left, 0px) + 24px);
+      overflow: hidden;
       background:
         radial-gradient(circle at center, rgba(34, 197, 94, 0.06), transparent 28%),
         linear-gradient(180deg, rgba(247, 241, 228, 0.985), rgba(238, 231, 214, 0.995));
-      align-content: center;
+      display: grid;
+      align-content: stretch;
       justify-items: center;
-      grid-template-rows: min-content minmax(0, auto) min-content;
-      gap: 14px;
+      grid-template-rows: minmax(0, 1fr) min-content;
+      gap: 18px;
     }
 
     .focus-stage.is-pseudo-fullscreen .focus-stage-overlay,
@@ -1046,10 +1053,10 @@
     .focus-stage:fullscreen .focus-arena,
     .focus-stage:-webkit-full-screen .focus-arena {
       width: 100%;
-      max-width: 920px;
-      min-height: 380px;
-      height: 72vh;
-      max-height: 640px;
+      max-width: min(1120px, calc(100vw - 48px));
+      min-height: 0;
+      height: 100%;
+      max-height: none;
       margin: 0 auto;
     }
 
@@ -1988,10 +1995,34 @@
       gap: var(--spacing-sm);
     }
 
+    .side-rail-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-sm);
+    }
+
     .side-rail-head h2 {
       font-size: 32px;
       line-height: 1.13;
       letter-spacing: -0.32px;
+    }
+
+    .side-rail-collapse-btn {
+      flex: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      min-height: 36px;
+      padding: 0;
+      border-radius: var(--rounded-full);
+      background: var(--colors-surface-strong);
+      border: 1px solid var(--colors-hairline);
+      color: var(--colors-ink);
+      font-size: 22px;
+      line-height: 1;
     }
 
     .side-rail-head p,
@@ -2175,6 +2206,58 @@
 
     .controls {
       gap: var(--spacing-base);
+    }
+
+    .module-settings {
+      border: 1px solid var(--colors-hairline);
+      border-radius: var(--rounded-lg);
+      background: var(--colors-canvas-soft);
+    }
+
+    .module-settings-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-sm);
+      min-height: 44px;
+      padding: 10px 14px;
+      color: var(--colors-body-strong);
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+
+    .module-settings-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .module-settings-summary span {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .module-settings-summary strong {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      height: 26px;
+      padding: 0 10px;
+      border-radius: var(--rounded-pill);
+      background: var(--colors-surface-strong);
+      color: var(--colors-body-strong);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .module-settings[open] .module-settings-summary {
+      border-bottom: 1px solid var(--colors-hairline);
+    }
+
+    .module-settings-body {
+      display: grid;
+      gap: var(--spacing-base);
+      padding: var(--spacing-base);
     }
 
     .field-grid {
@@ -2471,15 +2554,18 @@
 
     .reaction-zone.ready {
       background:
-        radial-gradient(circle at 50% 0%, rgba(22, 163, 74, 0.22), transparent 42%),
-        var(--colors-canvas-soft);
-      color: #166534;
+        radial-gradient(circle at 50% 0%, rgba(187, 247, 208, 0.58), transparent 44%),
+        linear-gradient(180deg, rgba(220, 252, 231, 0.98), rgba(187, 247, 208, 0.9));
+      border-color: rgba(22, 163, 74, 0.42);
+      color: #14532d;
     }
 
     .reaction-zone.waiting {
       background:
-        radial-gradient(circle at 50% 0%, rgba(244, 197, 168, 0.36), transparent 42%),
-        var(--colors-canvas-soft);
+        radial-gradient(circle at 50% 0%, rgba(254, 202, 202, 0.52), transparent 44%),
+        linear-gradient(180deg, rgba(254, 242, 242, 0.98), rgba(254, 202, 202, 0.88));
+      border-color: rgba(220, 38, 38, 0.34);
+      color: #7f1d1d;
     }
 
     .sustained-zone.active {
@@ -2631,28 +2717,33 @@
       display: flex;
       flex-direction: column;
       max-height: calc(100dvh - (var(--spacing-xl) * 2));
-      overflow: hidden;
-    }
-
-    .quick-nav {
-      min-height: 0;
       overflow-y: auto;
       overscroll-behavior: contain;
-      padding-right: var(--spacing-xxs);
       scrollbar-gutter: stable;
     }
 
+    .quick-nav {
+      overflow: visible;
+      padding-right: var(--spacing-xxs);
+    }
+
     .quick-nav::-webkit-scrollbar,
+    .side-rail-card::-webkit-scrollbar,
+    .home-view::-webkit-scrollbar,
     .history-list::-webkit-scrollbar {
       width: 8px;
     }
 
     .quick-nav::-webkit-scrollbar-track,
+    .side-rail-card::-webkit-scrollbar-track,
+    .home-view::-webkit-scrollbar-track,
     .history-list::-webkit-scrollbar-track {
       background: transparent;
     }
 
     .quick-nav::-webkit-scrollbar-thumb,
+    .side-rail-card::-webkit-scrollbar-thumb,
+    .home-view::-webkit-scrollbar-thumb,
     .history-list::-webkit-scrollbar-thumb {
       border: 2px solid transparent;
       border-radius: var(--rounded-pill);
@@ -2662,6 +2753,133 @@
 
     .side-rail-note {
       flex: none;
+    }
+
+    @media (min-width: 981px) {
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .app-shell {
+        height: 100dvh;
+        padding: var(--spacing-xl) 0;
+      }
+
+      .workspace-shell {
+        height: calc(100dvh - (var(--spacing-xl) * 2));
+        min-height: 0;
+      }
+
+      .side-rail {
+        position: relative;
+        top: 0;
+        height: 100%;
+        max-height: 100%;
+      }
+
+      .side-rail-card {
+        height: 100%;
+        max-height: 100%;
+      }
+
+      .main-stage,
+      .games-grid {
+        min-height: 0;
+      }
+
+      .main-stage {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .home-view.is-active {
+        height: 100%;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
+      }
+
+      .games-grid {
+        height: 100%;
+        margin-top: 0;
+      }
+
+      .game-card.is-active {
+        height: 100%;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
+      }
+
+      .game-card.is-active::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .game-card.is-active::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .game-card.is-active::-webkit-scrollbar-thumb {
+        border: 2px solid transparent;
+        border-radius: var(--rounded-pill);
+        background: var(--colors-hairline-strong);
+        background-clip: padding-box;
+      }
+
+      .game-card > .section-head {
+        top: 0;
+      }
+
+      body.sidebar-collapsed .workspace-shell {
+        grid-template-columns: 76px minmax(0, 1fr);
+      }
+
+      body.sidebar-collapsed .side-rail-card {
+        padding: var(--spacing-sm);
+        align-items: stretch;
+      }
+
+      body.sidebar-collapsed .side-rail-head {
+        display: block;
+      }
+
+      body.sidebar-collapsed .side-rail-kicker,
+      body.sidebar-collapsed .side-rail-head h2,
+      body.sidebar-collapsed .side-rail-head p,
+      body.sidebar-collapsed .quick-nav-copy {
+        display: none;
+      }
+
+      body.sidebar-collapsed .side-rail-title-row {
+        display: flex;
+        justify-content: center;
+      }
+
+      body.sidebar-collapsed .side-rail-collapse-btn {
+        transform: rotate(180deg);
+      }
+
+      body.sidebar-collapsed .quick-nav {
+        padding-right: 0;
+      }
+
+      body.sidebar-collapsed .quick-nav-tab {
+        min-height: 46px;
+        justify-content: center;
+        padding: var(--spacing-xs);
+      }
+
+      body.sidebar-collapsed .quick-nav-tab::before {
+        left: 4px;
+        top: 12px;
+        bottom: 12px;
+      }
+
+      body.sidebar-collapsed .quick-nav-index {
+        min-width: 40px;
+      }
     }
 
     .record-panel .history-list {
@@ -2674,13 +2892,44 @@
 
     .game-card > .section-head {
       position: sticky;
-      top: var(--spacing-xl);
-      z-index: 5;
+      top: 0;
+      z-index: 6;
       margin: calc(var(--spacing-lg) * -1) calc(var(--spacing-lg) * -1) 0;
       padding: var(--spacing-lg);
       border-radius: var(--rounded-xl) var(--rounded-xl) 0 0;
       background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(10px);
+      transition: padding 0.18s ease, gap 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .game-card.is-scrolled > .section-head {
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: 10px var(--spacing-lg);
+      box-shadow: 0 10px 24px rgba(12, 10, 9, 0.06);
+    }
+
+    .game-card.is-scrolled > .section-head h2 {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .game-card.is-scrolled > .section-head p {
+      max-width: 48rem;
+      overflow: hidden;
+      color: var(--colors-muted);
+      font-size: 12px;
+      line-height: 1.35;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .game-card.is-scrolled > .section-head .badge {
+      padding: 3px 9px;
+      font-size: 11px;
     }
 
     @media (max-width: 1120px) {
@@ -2704,6 +2953,10 @@
         background: rgba(255, 255, 255, 0.98);
         height: 100%;
         max-height: none;
+      }
+
+      .side-rail-collapse-btn {
+        display: none;
       }
 
       .side-rail {
@@ -2795,7 +3048,10 @@
           <button class="side-rail-close" id="side-rail-close-btn" type="button" aria-label="关闭侧边栏">×</button>
           <div class="side-rail-head">
             <div class="side-rail-kicker">Training Menu</div>
-            <h2>项目切换</h2>
+            <div class="side-rail-title-row">
+              <h2>项目切换</h2>
+              <button class="side-rail-collapse-btn" id="side-rail-collapse-btn" type="button" aria-label="收起侧边栏" aria-expanded="true">‹</button>
+            </div>
             <p>左侧切项目，右侧专注当前训练。训练进行中会阻止误切换。</p>
           </div>
 
@@ -2846,14 +3102,12 @@
             </button>
           </div>
 
-          <div class="side-rail-note">手机端也保持侧边栏形态，点击左上角按钮呼出；桌面端则固定在左边，切项目更直接。</div>
         </div>
       </aside>
 
       <main class="main-stage">
         <section class="home-view is-active" id="home-card" role="tabpanel" aria-labelledby="nav-home-card" aria-hidden="false">
           <section class="hero">
-            <div class="eyebrow">离线单文件 · 本地记录 · 手机可用</div>
             <h1>Algernon</h1>
             <p>一个专门给本地使用设计的轻量训练页面，包含舒尔特方格、T-Back 工作记忆、Stroop 斯特鲁普色词测试、Go/No-Go 冲动克制、反扫视、凝视专注抗干扰、多轮反应时训练、持续注意力训练，以及吸 4 秒呼 6 秒的节拍呼吸慢练。所有记录默认保存在当前浏览器的本地存储里，不依赖网络。</p>
           </section>
@@ -3822,6 +4076,7 @@
         sidebarScrim: $("sidebar-scrim"),
         sideRail: $("side-rail"),
         sideRailClose: $("side-rail-close-btn"),
+        sideRailCollapse: $("side-rail-collapse-btn"),
 
         totalSessions: $("total-sessions"),
         totalDuration: $("total-duration"),
@@ -4269,17 +4524,115 @@
       function syncSidebarViewportMode() {
         if (!isSidebarDrawerMode()) {
           closeSidebar();
+        } else {
+          document.body.classList.remove("sidebar-collapsed");
+          if (refs.sideRailCollapse) {
+            refs.sideRailCollapse.setAttribute("aria-expanded", "true");
+            refs.sideRailCollapse.setAttribute("aria-label", "收起侧边栏");
+          }
+        }
+      }
+
+      function toggleSidebarCollapsed() {
+        if (isSidebarDrawerMode()) {
+          return;
+        }
+        const collapsed = !document.body.classList.contains("sidebar-collapsed");
+        document.body.classList.toggle("sidebar-collapsed", collapsed);
+        if (refs.sideRailCollapse) {
+          refs.sideRailCollapse.setAttribute("aria-expanded", collapsed ? "false" : "true");
+          refs.sideRailCollapse.setAttribute("aria-label", collapsed ? "展开侧边栏" : "收起侧边栏");
         }
       }
 
       function initSidebar() {
         refs.sidebarToggle.addEventListener("click", toggleSidebar);
         refs.sideRailClose.addEventListener("click", closeSidebar);
+        if (refs.sideRailCollapse) {
+          refs.sideRailCollapse.addEventListener("click", toggleSidebarCollapsed);
+        }
         refs.sidebarScrim.addEventListener("click", closeSidebar);
         window.addEventListener("resize", syncSidebarViewportMode);
         window.addEventListener("orientationchange", syncSidebarViewportMode);
         document.addEventListener("keydown", handleSidebarEscape);
         syncSidebarViewportMode();
+      }
+
+      function createSettingsPanel(panelId, itemCount) {
+        const panel = $(panelId);
+        if (!panel) return;
+
+        const controls = panel.querySelector(".controls");
+        if (!controls) return;
+
+        const items = Array.from(controls.children).slice(0, itemCount);
+        if (items.length === 0) return;
+
+        const details = document.createElement("details");
+        details.className = "module-settings";
+
+        const summary = document.createElement("summary");
+        summary.className = "module-settings-summary";
+        summary.innerHTML = '<span>训练设置</span><strong>调整</strong>';
+
+        const body = document.createElement("div");
+        body.className = "module-settings-body";
+
+        details.appendChild(summary);
+        details.appendChild(body);
+        controls.insertBefore(details, controls.firstElementChild);
+
+        items.forEach((item) => {
+          body.appendChild(item);
+        });
+      }
+
+      function initModuleSettings() {
+        [
+          ["schulte-card", 1],
+          ["tback-card", 2],
+          ["stroop-card", 1],
+          ["gonogo-card", 1],
+          ["antisaccade-card", 1],
+          ["focus-card", 2],
+          ["reaction-card", 1],
+          ["sustained-card", 3],
+          ["breath-card", 2]
+        ].forEach(([panelId, itemCount]) => {
+          createSettingsPanel(panelId, itemCount);
+        });
+      }
+
+      function syncPanelScrollState(panel) {
+        if (!panel) return;
+        const mainStage = document.querySelector(".main-stage");
+        const scrollTop = Math.max(
+          panel.scrollTop || 0,
+          mainStage ? mainStage.scrollTop || 0 : 0,
+          document.documentElement.scrollTop || 0,
+          document.body.scrollTop || 0,
+          window.scrollY || 0
+        );
+        panel.classList.toggle("is-scrolled", scrollTop > 16);
+      }
+
+      function initPanelScrollStates() {
+        const syncActive = () => {
+          syncPanelScrollState(panelMap.get(state.ui.activePanelId));
+        };
+
+        panelMap.forEach((panel) => {
+          if (!panel) return;
+          panel.addEventListener("scroll", () => syncPanelScrollState(panel), { passive: true });
+          syncPanelScrollState(panel);
+        });
+
+        const mainStage = document.querySelector(".main-stage");
+        if (mainStage) {
+          mainStage.addEventListener("scroll", syncActive, { passive: true });
+        }
+        window.addEventListener("scroll", syncActive, { passive: true });
+        document.addEventListener("scroll", syncActive, true);
       }
 
       function getPanelIdFromHash() {
@@ -4412,10 +4765,18 @@
           panel.hidden = !active;
           panel.classList.toggle("is-active", active);
           panel.setAttribute("aria-hidden", active ? "false" : "true");
+          if (active) {
+            panel.scrollTop = 0;
+            syncPanelScrollState(panel);
+          }
         });
 
         if (config.updateHash !== false) {
           updatePanelHash(nextPanelId);
+        }
+
+        if (window.innerWidth > 980) {
+          window.scrollTo({ top: 0, left: 0, behavior: "auto" });
         }
 
         closeSidebar();
@@ -5524,22 +5885,7 @@
           return;
         }
 
-        const nativeRequested = requestElementFullscreen(refs.focusStage);
-        if (!nativeRequested) {
-          setFocusPseudoFullscreen(true);
-          syncFocusFullscreenUi();
-          refreshFocusViewportLayout();
-          return;
-        }
-
-        window.setTimeout(() => {
-          if (!isFocusNativeFullscreen() && !isFocusPseudoFullscreen()) {
-            setFocusPseudoFullscreen(true);
-            syncFocusFullscreenUi();
-            refreshFocusViewportLayout();
-          }
-        }, 220);
-
+        setFocusPseudoFullscreen(true);
         syncFocusFullscreenUi();
         refreshFocusViewportLayout();
       }
@@ -6897,6 +7243,8 @@
         initSustained();
         initBreath();
         initRecordsActions();
+        initModuleSettings();
+        initPanelScrollStates();
         initPanelSwitcher();
       }
       boot().catch(function (err) { console.error("boot failed:", err); });
