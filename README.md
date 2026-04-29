@@ -59,4 +59,4 @@ npm run tauri build  # 产出在 src-tauri/target/release/bundle/
 
 ## License
 
-ISC
+MIT
