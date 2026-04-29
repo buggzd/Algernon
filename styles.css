@@ -18,6 +18,7 @@
       --radius-lg: 18px;
       --radius-md: 14px;
       --radius-sm: 10px;
+      --app-vh: 100vh;
     }
 
     * {
@@ -2703,13 +2704,13 @@
     }
 
     .side-rail {
-      max-height: calc(100dvh - (var(--spacing-xl) * 2));
+      max-height: calc(var(--app-vh) - (var(--spacing-xl) * 2));
     }
 
     .side-rail-card {
       display: flex;
       flex-direction: column;
-      max-height: calc(100dvh - (var(--spacing-xl) * 2));
+      max-height: calc(var(--app-vh) - (var(--spacing-xl) * 2));
       overflow-y: auto;
       overscroll-behavior: contain;
       scrollbar-gutter: stable;
@@ -2756,13 +2757,15 @@
       }
 
       .app-shell {
-        height: 100dvh;
+        height: var(--app-vh);
+        min-height: 0;
         padding: var(--spacing-xl) 0;
       }
 
       .workspace-shell {
-        height: calc(100dvh - (var(--spacing-xl) * 2));
+        height: calc(var(--app-vh) - (var(--spacing-xl) * 2));
         min-height: 0;
+        align-items: stretch;
       }
 
       .side-rail {
@@ -2770,11 +2773,13 @@
         top: 0;
         height: 100%;
         max-height: 100%;
+        min-height: 0;
       }
 
       .side-rail-card {
         height: 100%;
         max-height: 100%;
+        min-height: 0;
       }
 
       .main-stage,
@@ -2784,11 +2789,13 @@
 
       .main-stage {
         height: 100%;
+        max-height: 100%;
         overflow: hidden;
       }
 
       .home-view.is-active {
         height: 100%;
+        max-height: 100%;
         overflow-y: auto;
         overscroll-behavior: contain;
         scrollbar-gutter: stable;
@@ -2796,11 +2803,13 @@
 
       .games-grid {
         height: 100%;
+        max-height: 100%;
         margin-top: 0;
       }
 
       .game-card.is-active {
         height: 100%;
+        max-height: 100%;
         overflow-y: auto;
         overscroll-behavior: contain;
         scrollbar-gutter: stable;

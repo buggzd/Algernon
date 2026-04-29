@@ -25,6 +25,7 @@
       --radius-lg: 18px;
       --radius-md: 14px;
       --radius-sm: 10px;
+      --app-vh: 100vh;
     }
 
     * {
@@ -2710,13 +2711,13 @@
     }
 
     .side-rail {
-      max-height: calc(100dvh - (var(--spacing-xl) * 2));
+      max-height: calc(var(--app-vh) - (var(--spacing-xl) * 2));
     }
 
     .side-rail-card {
       display: flex;
       flex-direction: column;
-      max-height: calc(100dvh - (var(--spacing-xl) * 2));
+      max-height: calc(var(--app-vh) - (var(--spacing-xl) * 2));
       overflow-y: auto;
       overscroll-behavior: contain;
       scrollbar-gutter: stable;
@@ -2763,13 +2764,15 @@
       }
 
       .app-shell {
-        height: 100dvh;
+        height: var(--app-vh);
+        min-height: 0;
         padding: var(--spacing-xl) 0;
       }
 
       .workspace-shell {
-        height: calc(100dvh - (var(--spacing-xl) * 2));
+        height: calc(var(--app-vh) - (var(--spacing-xl) * 2));
         min-height: 0;
+        align-items: stretch;
       }
 
       .side-rail {
@@ -2777,11 +2780,13 @@
         top: 0;
         height: 100%;
         max-height: 100%;
+        min-height: 0;
       }
 
       .side-rail-card {
         height: 100%;
         max-height: 100%;
+        min-height: 0;
       }
 
       .main-stage,
@@ -2791,11 +2796,13 @@
 
       .main-stage {
         height: 100%;
+        max-height: 100%;
         overflow: hidden;
       }
 
       .home-view.is-active {
         height: 100%;
+        max-height: 100%;
         overflow-y: auto;
         overscroll-behavior: contain;
         scrollbar-gutter: stable;
@@ -2803,11 +2810,13 @@
 
       .games-grid {
         height: 100%;
+        max-height: 100%;
         margin-top: 0;
       }
 
       .game-card.is-active {
         height: 100%;
+        max-height: 100%;
         overflow-y: auto;
         overscroll-behavior: contain;
         scrollbar-gutter: stable;
@@ -4492,6 +4501,24 @@
         element.className = "status" + (tone ? " " + tone : "");
       }
 
+      function updateAppViewportHeight() {
+        const height = Math.max(320, Math.round((window.visualViewport && window.visualViewport.height) || window.innerHeight || 0));
+        document.documentElement.style.setProperty("--app-vh", height + "px");
+        if (state && state.ui) {
+          syncPanelScrollState(panelMap.get(state.ui.activePanelId));
+        }
+      }
+
+      function initViewportHeightSync() {
+        updateAppViewportHeight();
+        window.addEventListener("resize", updateAppViewportHeight, { passive: true });
+        window.addEventListener("orientationchange", updateAppViewportHeight);
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener("resize", updateAppViewportHeight, { passive: true });
+          window.visualViewport.addEventListener("scroll", updateAppViewportHeight, { passive: true });
+        }
+      }
+
       function isSidebarDrawerMode() {
         return window.innerWidth <= 980;
       }
@@ -4522,6 +4549,7 @@
       }
 
       function syncSidebarViewportMode() {
+        updateAppViewportHeight();
         if (!isSidebarDrawerMode()) {
           closeSidebar();
         } else {
@@ -7227,6 +7255,7 @@
       }
 
       async function boot() {
+        initViewportHeightSync();
         await initPersistence();
         await loadRecords();
         await loadAndApplyPreferences();

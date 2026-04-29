@@ -749,6 +749,24 @@
         element.className = "status" + (tone ? " " + tone : "");
       }
 
+      function updateAppViewportHeight() {
+        const height = Math.max(320, Math.round((window.visualViewport && window.visualViewport.height) || window.innerHeight || 0));
+        document.documentElement.style.setProperty("--app-vh", height + "px");
+        if (state && state.ui) {
+          syncPanelScrollState(panelMap.get(state.ui.activePanelId));
+        }
+      }
+
+      function initViewportHeightSync() {
+        updateAppViewportHeight();
+        window.addEventListener("resize", updateAppViewportHeight, { passive: true });
+        window.addEventListener("orientationchange", updateAppViewportHeight);
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener("resize", updateAppViewportHeight, { passive: true });
+          window.visualViewport.addEventListener("scroll", updateAppViewportHeight, { passive: true });
+        }
+      }
+
       function isSidebarDrawerMode() {
         return window.innerWidth <= 980;
       }
@@ -779,6 +797,7 @@
       }
 
       function syncSidebarViewportMode() {
+        updateAppViewportHeight();
         if (!isSidebarDrawerMode()) {
           closeSidebar();
         } else {
@@ -3484,6 +3503,7 @@
       }
 
       async function boot() {
+        initViewportHeightSync();
         await initPersistence();
         await loadRecords();
         await loadAndApplyPreferences();
