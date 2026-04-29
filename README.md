@@ -1,6 +1,10 @@
-# <img src="src/logo.png" width="32" height="32" alt=""> Algernon
+<p align="center">
+  <img src="src/logo.png" width="256" alt="Algernon">
+</p>
 
-基于 [Perhacept/train_brain](https://github.com/Perhacept/train_brain) 改进的脑力认知训练应用。"Algernon" 致敬《献给阿尔吉侬的花束》。
+<h1 align="center">Algernon</h1>
+
+<p align="center">基于 <a href="https://github.com/Perhacept/train_brain">Perhacept/train_brain</a> 改进的脑力认知训练应用。"Algernon" 致敬《献给阿尔吉侬的花束》。</p>
 
 ## 功能
 
