@@ -1,6 +1,6 @@
-# 脑力训练营 (Brain Gym)
+# <img src="src/logo.png" width="32" height="32" alt=""> Algernon
 
-基于 [Perhacept/train_brain](https://github.com/Perhacept/train_brain) 改进的脑力认知训练应用。
+基于 [Perhacept/train_brain](https://github.com/Perhacept/train_brain) 改进的脑力认知训练应用。"Algernon" 致敬《献给阿尔吉侬的花束》。
 
 ## 功能
 

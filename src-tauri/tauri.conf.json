@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/nicedoc/schemas/refs/heads/main/tauri-conf.schema.json",
-  "productName": "脑力训练营",
+  "productName": "Algernon",
   "version": "1.0.0",
-  "identifier": "com.brain-training-camp.app",
+  "identifier": "com.brain-gym.algernon",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "脑力训练营",
+        "title": "Algernon",
         "width": 1200,
         "height": 800,
         "minWidth": 800,

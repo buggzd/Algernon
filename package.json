@@ -1,8 +1,18 @@
 {
-  "name": "brain-training-camp",
+  "name": "algernon",
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "description": "Algernon — 脑力认知训练桌面应用",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buggzd/Algernon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/buggzd/Algernon/issues"
+  },
+  "homepage": "https://github.com/buggzd/Algernon#readme",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,18 +27,5 @@
     "@tauri-apps/api": "^2.10.1",
     "@tauri-apps/plugin-dialog": "^2.7.0",
     "@tauri-apps/plugin-fs": "^2.5.0"
-  },
-  "description": "",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/buggzd/brain_gym.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/buggzd/brain_gym/issues"
-  },
-  "homepage": "https://github.com/buggzd/brain_gym#readme"
+  }
 }
