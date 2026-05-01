@@ -8,6 +8,9 @@
       let appDataDir = null;
       let isTauri = false;
       let tauriModules = null;
+      let focusStagePlaceholder = null;
+      let focusStageOriginalParent = null;
+      let focusStageOriginalNextSibling = null;
 
       async function initPersistence() {
         isTauri = !!(window.__TAURI__ || window.__TAURI_INTERNALS__);
@@ -876,6 +879,120 @@
           ["breath-card", 2]
         ].forEach(([panelId, itemCount]) => {
           createSettingsPanel(panelId, itemCount);
+        });
+      }
+
+      function closeCustomSelects(except) {
+        document.querySelectorAll(".custom-select.is-open").forEach((select) => {
+          if (select === except) return;
+          select.classList.remove("is-open");
+          const trigger = select.querySelector(".custom-select-trigger");
+          if (trigger) {
+            trigger.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
+      function initCustomSelects() {
+        document.querySelectorAll("select").forEach((select) => {
+          if (select.closest(".custom-select")) return;
+
+          const wrapper = document.createElement("div");
+          wrapper.className = "custom-select";
+
+          const trigger = document.createElement("button");
+          trigger.className = "custom-select-trigger";
+          trigger.type = "button";
+          trigger.setAttribute("aria-haspopup", "listbox");
+          trigger.setAttribute("aria-expanded", "false");
+
+          const value = document.createElement("span");
+          value.className = "custom-select-value";
+
+          const chevron = document.createElement("span");
+          chevron.className = "custom-select-chevron";
+          chevron.setAttribute("aria-hidden", "true");
+
+          const menu = document.createElement("div");
+          menu.className = "custom-select-menu";
+          menu.setAttribute("role", "listbox");
+
+          function syncCustomSelect() {
+            const selectedOption = select.options[select.selectedIndex];
+            value.textContent = selectedOption ? selectedOption.textContent : "";
+            Array.from(menu.children).forEach((option) => {
+              const active = option.dataset.value === select.value;
+              option.classList.toggle("is-selected", active);
+              option.setAttribute("aria-selected", active ? "true" : "false");
+            });
+          }
+
+          Array.from(select.options).forEach((option) => {
+            const item = document.createElement("button");
+            item.className = "custom-select-option";
+            item.type = "button";
+            item.setAttribute("role", "option");
+            item.dataset.value = option.value;
+            item.textContent = option.textContent;
+            item.addEventListener("click", () => {
+              select.value = option.value;
+              select.dispatchEvent(new Event("change", { bubbles: true }));
+              syncCustomSelect();
+              closeCustomSelects();
+              trigger.focus();
+            });
+            menu.appendChild(item);
+          });
+
+          select.classList.add("native-select");
+          select.parentNode.insertBefore(wrapper, select);
+          wrapper.appendChild(select);
+          trigger.appendChild(value);
+          trigger.appendChild(chevron);
+          wrapper.appendChild(trigger);
+          wrapper.appendChild(menu);
+          syncCustomSelect();
+
+          trigger.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const willOpen = !wrapper.classList.contains("is-open");
+            closeCustomSelects(wrapper);
+            wrapper.classList.toggle("is-open", willOpen);
+            trigger.setAttribute("aria-expanded", willOpen ? "true" : "false");
+          });
+
+          trigger.addEventListener("keydown", (event) => {
+            if (!["ArrowDown", "Enter", " "].includes(event.key)) return;
+            event.preventDefault();
+            closeCustomSelects(wrapper);
+            wrapper.classList.add("is-open");
+            trigger.setAttribute("aria-expanded", "true");
+            const selected = menu.querySelector(".custom-select-option.is-selected") || menu.querySelector(".custom-select-option");
+            if (selected) selected.focus();
+          });
+
+          menu.addEventListener("keydown", (event) => {
+            const options = Array.from(menu.querySelectorAll(".custom-select-option"));
+            const index = options.indexOf(document.activeElement);
+            if (event.key === "Escape") {
+              event.preventDefault();
+              closeCustomSelects();
+              trigger.focus();
+              return;
+            }
+            if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+            event.preventDefault();
+            const delta = event.key === "ArrowDown" ? 1 : -1;
+            const next = options[(index + delta + options.length) % options.length];
+            if (next) next.focus();
+          });
+
+          select.addEventListener("change", syncCustomSelect);
+        });
+
+        document.addEventListener("click", () => closeCustomSelects());
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") closeCustomSelects();
         });
       }
 
@@ -2094,6 +2211,22 @@
       function setFocusPseudoFullscreen(active) {
         if (!refs.focusStage) {
           return;
+        }
+
+        if (active && !focusStagePlaceholder) {
+          focusStageOriginalParent = refs.focusStage.parentNode;
+          focusStageOriginalNextSibling = refs.focusStage.nextSibling;
+          focusStagePlaceholder = document.createComment("focus-stage-placeholder");
+          focusStageOriginalParent.insertBefore(focusStagePlaceholder, refs.focusStage);
+          document.body.appendChild(refs.focusStage);
+        }
+
+        if (!active && focusStagePlaceholder && focusStageOriginalParent) {
+          focusStageOriginalParent.insertBefore(refs.focusStage, focusStagePlaceholder);
+          focusStagePlaceholder.remove();
+          focusStagePlaceholder = null;
+          focusStageOriginalParent = null;
+          focusStageOriginalNextSibling = null;
         }
 
         refs.focusStage.classList.toggle("is-pseudo-fullscreen", active);
@@ -3521,6 +3654,7 @@
         initBreath();
         initRecordsActions();
         initModuleSettings();
+        initCustomSelects();
         initPanelScrollStates();
         initPanelSwitcher();
       }

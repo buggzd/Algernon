@@ -2288,6 +2288,189 @@
       box-shadow: none;
     }
 
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 44px;
+      background:
+        linear-gradient(45deg, transparent 50%, var(--colors-muted) 50%) calc(100% - 23px) 50% / 6px 6px no-repeat,
+        linear-gradient(135deg, var(--colors-muted) 50%, transparent 50%) calc(100% - 18px) 50% / 6px 6px no-repeat,
+        var(--colors-surface-card);
+      cursor: pointer;
+    }
+
+    select:hover {
+      border-color: var(--colors-hairline-strong);
+      background:
+        linear-gradient(45deg, transparent 50%, var(--colors-body-strong) 50%) calc(100% - 23px) 50% / 6px 6px no-repeat,
+        linear-gradient(135deg, var(--colors-body-strong) 50%, transparent 50%) calc(100% - 18px) 50% / 6px 6px no-repeat,
+        var(--colors-surface-card);
+    }
+
+    select option {
+      background: var(--colors-surface-card);
+      color: var(--colors-ink);
+    }
+
+    .custom-select {
+      position: relative;
+      width: 100%;
+    }
+
+    .native-select {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .custom-select-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-sm);
+      width: 100%;
+      min-height: 44px;
+      border-radius: var(--rounded-md);
+      border: 1px solid var(--colors-hairline);
+      background: var(--colors-surface-card);
+      color: var(--colors-ink);
+      padding: 10px 10px 10px 16px;
+      text-align: left;
+      box-shadow: none;
+    }
+
+    .custom-select-trigger:hover,
+    .custom-select.is-open .custom-select-trigger {
+      border-color: var(--colors-hairline-strong);
+      background: var(--colors-canvas-soft);
+      transform: none;
+      box-shadow: none;
+    }
+
+    .custom-select-value {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .custom-select-chevron {
+      position: relative;
+      flex: none;
+      width: 28px;
+      height: 28px;
+      margin-left: auto;
+      border-radius: var(--rounded-pill);
+      background: var(--colors-surface-strong);
+      transition: background 0.18s ease;
+    }
+
+    .custom-select-chevron::before {
+      content: "";
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-right: 1.5px solid var(--colors-muted);
+      border-bottom: 1.5px solid var(--colors-muted);
+      transform: translate(10px, 8px) rotate(45deg);
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .custom-select.is-open .custom-select-chevron {
+      background: var(--colors-surface-card);
+    }
+
+    .custom-select.is-open .custom-select-chevron::before {
+      border-color: var(--colors-body-strong);
+      transform: translate(10px, 12px) rotate(225deg);
+    }
+
+    .custom-select-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      left: 0;
+      z-index: 40;
+      display: grid;
+      gap: var(--spacing-xxs);
+      max-height: 220px;
+      overflow-y: auto;
+      padding: var(--spacing-xs);
+      border: 1px solid var(--colors-hairline);
+      border-radius: var(--rounded-xl);
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 16px 32px rgba(12, 10, 9, 0.08);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-4px);
+      transition: opacity 0.14s ease, transform 0.14s ease;
+      scrollbar-width: thin;
+      scrollbar-color: var(--colors-hairline-strong) transparent;
+    }
+
+    .custom-select-menu::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .custom-select-menu::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-select-menu::-webkit-scrollbar-thumb {
+      border: 2px solid transparent;
+      border-radius: var(--rounded-pill);
+      background: rgba(120, 113, 108, 0.32);
+      background-clip: padding-box;
+    }
+
+    .custom-select.is-open .custom-select-menu {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .custom-select-option {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      min-height: 36px;
+      border: 0;
+      border-radius: var(--rounded-md);
+      background: transparent;
+      color: var(--colors-body-strong);
+      padding: 8px 34px 8px 10px;
+      position: relative;
+      text-align: left;
+      box-shadow: none;
+    }
+
+    .custom-select-option:hover,
+    .custom-select-option:focus-visible {
+      background: var(--colors-surface-strong);
+      transform: none;
+      box-shadow: none;
+    }
+
+    .custom-select-option.is-selected {
+      background: var(--colors-canvas-soft);
+      color: var(--colors-ink);
+    }
+
+    .custom-select-option.is-selected::after {
+      content: "";
+      position: absolute;
+      right: 12px;
+      width: 7px;
+      height: 12px;
+      border-right: 1.5px solid var(--colors-ink);
+      border-bottom: 1.5px solid var(--colors-ink);
+      transform: translateY(-1px) rotate(45deg);
+    }
+
     select:focus,
     input:focus {
       outline: none;
@@ -2314,6 +2497,7 @@
     button:focus-visible,
     select:focus-visible,
     input:focus-visible,
+    .module-settings-summary:focus-visible,
     .reaction-zone:focus-visible,
     .sustained-zone:focus-visible,
     .breath-zone:focus-visible {
@@ -2419,6 +2603,34 @@
     .schulte-stage,
     .tback-stage {
       gap: var(--spacing-sm);
+    }
+
+    .schulte-stage {
+      width: min(100%, 760px);
+      grid-template-columns: minmax(0, 1fr) minmax(132px, 176px);
+      align-items: start;
+    }
+
+    .schulte-stage .status {
+      grid-column: 1 / -1;
+    }
+
+    .schulte-stage .button-row {
+      grid-column: 2;
+      grid-row: 2;
+      flex-direction: column;
+      align-self: stretch;
+      justify-content: flex-start;
+    }
+
+    .schulte-stage .button-row button {
+      width: 100%;
+      flex: none;
+    }
+
+    .schulte-board {
+      grid-column: 1;
+      grid-row: 2;
     }
 
     .schulte-board {
@@ -2720,7 +2932,9 @@
       max-height: calc(var(--app-vh) - (var(--spacing-xl) * 2));
       overflow-y: auto;
       overscroll-behavior: contain;
-      scrollbar-gutter: stable;
+      scrollbar-gutter: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(120, 113, 108, 0.32) transparent;
     }
 
     .quick-nav {
@@ -2728,27 +2942,55 @@
       padding-right: var(--spacing-xxs);
     }
 
+    .quick-nav,
+    .home-view,
+    .history-list,
+    .game-card.is-active,
+    .side-rail {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(120, 113, 108, 0.32) transparent;
+    }
+
     .quick-nav::-webkit-scrollbar,
     .side-rail-card::-webkit-scrollbar,
+    .side-rail::-webkit-scrollbar,
     .home-view::-webkit-scrollbar,
-    .history-list::-webkit-scrollbar {
-      width: 8px;
+    .history-list::-webkit-scrollbar,
+    .game-card.is-active::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
     }
 
     .quick-nav::-webkit-scrollbar-track,
     .side-rail-card::-webkit-scrollbar-track,
+    .side-rail::-webkit-scrollbar-track,
     .home-view::-webkit-scrollbar-track,
-    .history-list::-webkit-scrollbar-track {
-      background: transparent;
+    .history-list::-webkit-scrollbar-track,
+    .game-card.is-active::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.35);
+      border-radius: var(--rounded-pill);
     }
 
     .quick-nav::-webkit-scrollbar-thumb,
     .side-rail-card::-webkit-scrollbar-thumb,
+    .side-rail::-webkit-scrollbar-thumb,
     .home-view::-webkit-scrollbar-thumb,
-    .history-list::-webkit-scrollbar-thumb {
+    .history-list::-webkit-scrollbar-thumb,
+    .game-card.is-active::-webkit-scrollbar-thumb {
       border: 2px solid transparent;
       border-radius: var(--rounded-pill);
-      background: var(--colors-hairline-strong);
+      background: rgba(120, 113, 108, 0.34);
+      background-clip: padding-box;
+      min-height: 44px;
+    }
+
+    .quick-nav::-webkit-scrollbar-thumb:hover,
+    .side-rail-card::-webkit-scrollbar-thumb:hover,
+    .side-rail::-webkit-scrollbar-thumb:hover,
+    .home-view::-webkit-scrollbar-thumb:hover,
+    .history-list::-webkit-scrollbar-thumb:hover,
+    .game-card.is-active::-webkit-scrollbar-thumb:hover {
+      background: rgba(120, 113, 108, 0.48);
       background-clip: padding-box;
     }
 
@@ -2805,7 +3047,7 @@
         max-height: 100%;
         overflow-y: auto;
         overscroll-behavior: contain;
-        scrollbar-gutter: stable;
+        scrollbar-gutter: auto;
       }
 
       .games-grid {
@@ -2819,22 +3061,7 @@
         max-height: 100%;
         overflow-y: auto;
         overscroll-behavior: contain;
-        scrollbar-gutter: stable;
-      }
-
-      .game-card.is-active::-webkit-scrollbar {
-        width: 8px;
-      }
-
-      .game-card.is-active::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      .game-card.is-active::-webkit-scrollbar-thumb {
-        border: 2px solid transparent;
-        border-radius: var(--rounded-pill);
-        background: var(--colors-hairline-strong);
-        background-clip: padding-box;
+        scrollbar-gutter: auto;
       }
 
       .game-card > .section-head {
@@ -2896,7 +3123,7 @@
       overflow-y: auto;
       overscroll-behavior: contain;
       padding-right: var(--spacing-xs);
-      scrollbar-gutter: stable;
+      scrollbar-gutter: auto;
     }
 
     .game-card > .section-head {
@@ -3016,6 +3243,64 @@
         padding: var(--spacing-base);
       }
 
+      #schulte-card .controls {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #schulte-card .module-settings {
+        order: 3;
+      }
+
+      #schulte-card .live-row {
+        order: 2;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--spacing-xs);
+      }
+
+      #schulte-card .live-chip {
+        min-height: 42px;
+        padding: 8px 10px;
+      }
+
+      #schulte-card .live-chip span {
+        margin-bottom: 2px;
+        font-size: 11px;
+      }
+
+      #schulte-card .live-chip strong {
+        font-size: 18px;
+      }
+
+      .schulte-stage {
+        order: 1;
+        width: 100%;
+        grid-template-columns: 1fr;
+      }
+
+      .schulte-stage .status,
+      .schulte-stage .button-row,
+      .schulte-board {
+        grid-column: 1;
+        grid-row: auto;
+      }
+
+      .schulte-board {
+        order: 1;
+      }
+
+      .schulte-stage .button-row {
+        order: 2;
+        flex-direction: row;
+      }
+
+      .schulte-stage .status {
+        order: 3;
+        min-height: 0;
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+
       .game-card > .section-head {
         margin: calc(var(--spacing-base) * -1) calc(var(--spacing-base) * -1) 0;
         padding: var(--spacing-base);
@@ -3039,6 +3324,11 @@
         width: 100%;
       }
 
+      .schulte-stage .button-row button {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+
       .quick-nav-tab {
         width: 100%;
       }
@@ -3058,10 +3348,10 @@
           <div class="side-rail-head">
             <div class="side-rail-kicker">Training Menu</div>
             <div class="side-rail-title-row">
-              <h2>项目切换</h2>
+              <h2>Algernon</h2>
               <button class="side-rail-collapse-btn" id="side-rail-collapse-btn" type="button" aria-label="收起侧边栏" aria-expanded="true">‹</button>
             </div>
-            <p>左侧切项目，右侧专注当前训练。训练进行中会阻止误切换。</p>
+            <p>选择项目开始练习</p>
           </div>
 
           <div class="quick-nav" id="quick-nav" role="tablist" aria-label="训练项目切换">
@@ -3760,6 +4050,9 @@
       let appDataDir = null;
       let isTauri = false;
       let tauriModules = null;
+      let focusStagePlaceholder = null;
+      let focusStageOriginalParent = null;
+      let focusStageOriginalNextSibling = null;
 
       async function initPersistence() {
         isTauri = !!(window.__TAURI__ || window.__TAURI_INTERNALS__);
@@ -4628,6 +4921,120 @@
           ["breath-card", 2]
         ].forEach(([panelId, itemCount]) => {
           createSettingsPanel(panelId, itemCount);
+        });
+      }
+
+      function closeCustomSelects(except) {
+        document.querySelectorAll(".custom-select.is-open").forEach((select) => {
+          if (select === except) return;
+          select.classList.remove("is-open");
+          const trigger = select.querySelector(".custom-select-trigger");
+          if (trigger) {
+            trigger.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
+      function initCustomSelects() {
+        document.querySelectorAll("select").forEach((select) => {
+          if (select.closest(".custom-select")) return;
+
+          const wrapper = document.createElement("div");
+          wrapper.className = "custom-select";
+
+          const trigger = document.createElement("button");
+          trigger.className = "custom-select-trigger";
+          trigger.type = "button";
+          trigger.setAttribute("aria-haspopup", "listbox");
+          trigger.setAttribute("aria-expanded", "false");
+
+          const value = document.createElement("span");
+          value.className = "custom-select-value";
+
+          const chevron = document.createElement("span");
+          chevron.className = "custom-select-chevron";
+          chevron.setAttribute("aria-hidden", "true");
+
+          const menu = document.createElement("div");
+          menu.className = "custom-select-menu";
+          menu.setAttribute("role", "listbox");
+
+          function syncCustomSelect() {
+            const selectedOption = select.options[select.selectedIndex];
+            value.textContent = selectedOption ? selectedOption.textContent : "";
+            Array.from(menu.children).forEach((option) => {
+              const active = option.dataset.value === select.value;
+              option.classList.toggle("is-selected", active);
+              option.setAttribute("aria-selected", active ? "true" : "false");
+            });
+          }
+
+          Array.from(select.options).forEach((option) => {
+            const item = document.createElement("button");
+            item.className = "custom-select-option";
+            item.type = "button";
+            item.setAttribute("role", "option");
+            item.dataset.value = option.value;
+            item.textContent = option.textContent;
+            item.addEventListener("click", () => {
+              select.value = option.value;
+              select.dispatchEvent(new Event("change", { bubbles: true }));
+              syncCustomSelect();
+              closeCustomSelects();
+              trigger.focus();
+            });
+            menu.appendChild(item);
+          });
+
+          select.classList.add("native-select");
+          select.parentNode.insertBefore(wrapper, select);
+          wrapper.appendChild(select);
+          trigger.appendChild(value);
+          trigger.appendChild(chevron);
+          wrapper.appendChild(trigger);
+          wrapper.appendChild(menu);
+          syncCustomSelect();
+
+          trigger.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const willOpen = !wrapper.classList.contains("is-open");
+            closeCustomSelects(wrapper);
+            wrapper.classList.toggle("is-open", willOpen);
+            trigger.setAttribute("aria-expanded", willOpen ? "true" : "false");
+          });
+
+          trigger.addEventListener("keydown", (event) => {
+            if (!["ArrowDown", "Enter", " "].includes(event.key)) return;
+            event.preventDefault();
+            closeCustomSelects(wrapper);
+            wrapper.classList.add("is-open");
+            trigger.setAttribute("aria-expanded", "true");
+            const selected = menu.querySelector(".custom-select-option.is-selected") || menu.querySelector(".custom-select-option");
+            if (selected) selected.focus();
+          });
+
+          menu.addEventListener("keydown", (event) => {
+            const options = Array.from(menu.querySelectorAll(".custom-select-option"));
+            const index = options.indexOf(document.activeElement);
+            if (event.key === "Escape") {
+              event.preventDefault();
+              closeCustomSelects();
+              trigger.focus();
+              return;
+            }
+            if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+            event.preventDefault();
+            const delta = event.key === "ArrowDown" ? 1 : -1;
+            const next = options[(index + delta + options.length) % options.length];
+            if (next) next.focus();
+          });
+
+          select.addEventListener("change", syncCustomSelect);
+        });
+
+        document.addEventListener("click", () => closeCustomSelects());
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") closeCustomSelects();
         });
       }
 
@@ -5846,6 +6253,22 @@
       function setFocusPseudoFullscreen(active) {
         if (!refs.focusStage) {
           return;
+        }
+
+        if (active && !focusStagePlaceholder) {
+          focusStageOriginalParent = refs.focusStage.parentNode;
+          focusStageOriginalNextSibling = refs.focusStage.nextSibling;
+          focusStagePlaceholder = document.createComment("focus-stage-placeholder");
+          focusStageOriginalParent.insertBefore(focusStagePlaceholder, refs.focusStage);
+          document.body.appendChild(refs.focusStage);
+        }
+
+        if (!active && focusStagePlaceholder && focusStageOriginalParent) {
+          focusStageOriginalParent.insertBefore(refs.focusStage, focusStagePlaceholder);
+          focusStagePlaceholder.remove();
+          focusStagePlaceholder = null;
+          focusStageOriginalParent = null;
+          focusStageOriginalNextSibling = null;
         }
 
         refs.focusStage.classList.toggle("is-pseudo-fullscreen", active);
@@ -7273,6 +7696,7 @@
         initBreath();
         initRecordsActions();
         initModuleSettings();
+        initCustomSelects();
         initPanelScrollStates();
         initPanelSwitcher();
       }
