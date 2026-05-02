@@ -88,13 +88,21 @@ function toggleSidebarCollapsed() {
   refs.sideRailCollapse.setAttribute("aria-expanded", isCollapsed ? "true" : "false");
 }
 
+function syncSideRailScrollState() {
+  const sideRailCard = refs.sideRail.querySelector(".side-rail-card");
+  if (!sideRailCard) return;
+  sideRailCard.classList.toggle("is-rail-scrolled", sideRailCard.scrollTop > 24);
+}
+
 export function initSidebar() {
   refs.sidebarToggle.addEventListener("click", toggleSidebar);
   refs.sidebarScrim.addEventListener("click", closeSidebar);
   refs.sideRailClose.addEventListener("click", closeSidebar);
   refs.sideRailCollapse.addEventListener("click", toggleSidebarCollapsed);
+  refs.sideRail.querySelector(".side-rail-card")?.addEventListener("scroll", syncSideRailScrollState, { passive: true });
   document.addEventListener("keydown", handleSidebarEscape);
   window.addEventListener("resize", syncSidebarViewportMode, { passive: true });
+  syncSideRailScrollState();
   syncSidebarViewportMode();
 }
 

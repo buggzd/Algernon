@@ -1980,7 +1980,6 @@
     }
 
     .eyebrow,
-    .side-rail-kicker,
     .badge {
       border-radius: var(--rounded-pill);
       background: var(--colors-surface-strong);
@@ -1998,13 +1997,33 @@
     }
 
     .side-rail-card {
-      padding: var(--spacing-base);
+      padding: 0 var(--spacing-base) var(--spacing-base);
       border-radius: var(--rounded-xxl);
       background: rgba(255, 255, 255, 0.96);
     }
 
     .side-rail-head {
       gap: var(--spacing-sm);
+      position: sticky;
+      top: 0;
+      z-index: 24;
+      margin: 0 calc(var(--spacing-base) * -1);
+      width: calc(100% + (var(--spacing-base) * 2));
+      padding: var(--spacing-base);
+      border-radius: var(--rounded-xxl) var(--rounded-xxl) 0 0;
+      background: var(--colors-surface-card);
+      transition: padding 0.18s ease, gap 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .side-rail-head::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -14px;
+      height: 14px;
+      pointer-events: none;
+      background: linear-gradient(180deg, var(--colors-surface-card), rgba(255, 255, 255, 0));
     }
 
     .side-rail-title-row {
@@ -2018,6 +2037,29 @@
       font-size: 32px;
       line-height: 1.13;
       letter-spacing: -0.32px;
+      transition: font-size 0.18s ease, line-height 0.18s ease;
+    }
+
+    .side-rail-head p {
+      overflow: hidden;
+      max-height: 24px;
+      transition: max-height 0.18s ease, opacity 0.18s ease;
+    }
+
+    .side-rail-card.is-rail-scrolled .side-rail-head {
+      gap: var(--spacing-xs);
+      padding: var(--spacing-sm) var(--spacing-base);
+      box-shadow: 0 10px 24px rgba(12, 10, 9, 0.06);
+    }
+
+    .side-rail-card.is-rail-scrolled .side-rail-head h2 {
+      font-size: 22px;
+      line-height: 1.1;
+    }
+
+    .side-rail-card.is-rail-scrolled .side-rail-head p {
+      max-height: 0;
+      opacity: 0;
     }
 
     .side-rail-collapse-btn {
@@ -3010,6 +3052,7 @@
       display: flex;
       flex-direction: column;
       max-height: calc(var(--app-vh) - (var(--spacing-xl) * 2));
+      padding: 0 var(--spacing-base) var(--spacing-base);
       overflow-y: auto;
       overscroll-behavior: contain;
       scrollbar-gutter: auto;
@@ -3161,7 +3204,6 @@
         display: block;
       }
 
-      body.sidebar-collapsed .side-rail-kicker,
       body.sidebar-collapsed .side-rail-head h2,
       body.sidebar-collapsed .side-rail-head p,
       body.sidebar-collapsed .quick-nav-copy {
