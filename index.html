@@ -145,12 +145,14 @@
           </div>
 
           <div class="schulte-stage">
-            <div class="status" id="schulte-status">点击“开始新一局”后按从 1 开始的顺序依次点选。</div>
-            <div class="button-row">
-              <button class="primary-btn" id="schulte-start-btn">开始新一局</button>
-              <button class="secondary-btn" id="schulte-reset-btn">重置棋盘</button>
-            </div>
             <div class="schulte-board" id="schulte-board" aria-label="舒尔特方格棋盘"></div>
+            <div class="schulte-dock">
+              <div class="button-row">
+                <button class="primary-btn" id="schulte-start-btn">开始</button>
+                <button class="secondary-btn" id="schulte-reset-btn">重置</button>
+              </div>
+              <div class="status" id="schulte-status">从 1 开始依次点选，完成后记录用时。</div>
+            </div>
           </div>
         </div>
       </article>
@@ -214,7 +216,7 @@
             </div>
           </div>
 
-          <div class="status" id="tback-status">建议先从 2-Back 开始，保持稳定节奏，不要抢点。</div>
+          <div class="status" id="tback-status">当前设置：2-Back。保持稳定节奏，不要抢点。</div>
         </div>
       </article>
 
@@ -710,6 +712,6 @@
   </div>
 
 
-  <script type="module" src="/app.js"></script>
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>

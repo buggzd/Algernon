@@ -21,18 +21,43 @@ No lint or test commands exist.
 
 ## Architecture
 
-The app is split across three source files:
+- **`index.html`** — Entry HTML. References `styles.css` and `src/main.js`. Contains the full DOM structure: sidebar navigation, 9 game panels, and the records panel.
+- **`styles.css`** — All CSS. CSS custom properties for theming (`--bg`, `--ink`, `--brand`, `--accent`, etc.). Grid-based app shell layout, panel cards with backdrop blur, responsive sidebar-as-drawer.
+- **`src/main.js`** — ES Module entry point. Imports all core and game modules, runs the `boot()` sequence.
 
-- **`index.html`** (~707 lines) — Entry HTML. References `styles.css` and `app.js` as external files. Contains the full DOM structure: sidebar navigation, 9 game panels, and the records panel.
-- **`styles.css`** (~1,757 lines) — All CSS extracted from the original monolithic HTML. CSS custom properties for theming (`--bg`, `--ink`, `--brand`, `--accent`, etc.). Grid-based app shell layout, panel cards with backdrop blur, responsive sidebar-as-drawer.
-- **`app.js`** (~3,395 lines) — A single IIFE `(function () { ... })();` containing all app logic. Loaded as `<script type="module">`.
+### Module structure (`src/`)
+
+```
+src/
+├── main.js                   # Entry: imports all modules, boot() sequence
+├── core/
+│   ├── constants.js          # STORAGE_KEY, MAX_RECORDS, PANEL_IDS, etc.
+│   ├── state.js              # state object, refs object, $ helper
+│   ├── utils.js              # Pure functions: shuffle, formatDuration, setStatus, etc.
+│   ├── persistence.js        # Tauri/localStorage dual-backend persistence
+│   ├── records.js            # Record rendering, addRecord, import/export
+│   └── ui-shell.js           # Sidebar, panel routing, custom selects, viewport sync
+└── games/
+    ├── schulte.js            # Schulte grid
+    ├── tback.js              # T-Back
+    ├── stroop.js             # Stroop
+    ├── gonogo.js             # Go/No-Go
+    ├── antisaccade.js        # Anti-saccade
+    ├── focus.js              # Focus/gaze + fullscreen + Troxler grid
+    ├── reaction.js           # Reaction time
+    ├── sustained.js          # Sustained attention
+    └── breath.js             # Breath rhythm
+```
+
+Each game module exports a single `init<Game>()` function and imports `state`/`refs` from `core/state.js` and utilities from `core/utils.js`.
 
 ### JavaScript architecture
 
-- **State management**: A nested `state` object holds all mutable state for the 9 training games (schulte, tback, stroop, gonogo, antisaccade, focus, reaction, sustained, breath) plus a `ui.activePanelId` field.
-- **DOM references**: Collected in a `refs` object via `$` shorthand for `document.getElementById`.
-- **Panel routing**: Hash-based navigation (`#schulte-card`, `#tback-card`, etc.) drives which training panel is visible. `switchTrainingPanel()` handles transitions and blocks switches while a session is active.
-- **Sidebar**: Adaptive layout — sticky side rail at wide viewports, slide-out drawer at narrow viewports. Controlled via `setSidebarOpen()` / `closeSidebar()`.
+- **State management**: A nested `state` object (in `core/state.js`) holds all mutable state for the 9 training games plus `ui.activePanelId`.
+- **DOM references**: Collected in a `refs` object (in `core/state.js`) via `$` shorthand for `document.getElementById`.
+- **Panel routing**: Hash-based navigation drives which training panel is visible. `switchTrainingPanel()` in `core/ui-shell.js` handles transitions and blocks switches while a session is active.
+- **Sidebar**: Adaptive layout — sticky side rail at wide viewports, slide-out drawer at narrow viewports.
+- **Focus fullscreen**: `focus.js` exports `isFocusFullscreenActive` and `exitFocusFullscreen`, which are wired into `ui-shell.js` via `setFocusFullscreenCallbacks()` during boot.
 
 ### Game panel pattern
 
@@ -57,9 +82,17 @@ Each of the 9 training games follows the same pattern:
 - **`src-tauri/src/lib.rs`** — Registers `tauri-plugin-fs` and `tauri-plugin-dialog` plugins.
 - **`src-tauri/capabilities/default.json`** — Permissions: core defaults + FS read/write/exists + dialog save/open.
 
-### Initialization (bottom of app.js)
+### UI components
 
-`initPersistence()` → `loadRecords()` → `renderStats()` / `renderRecords()` → `initSidebar()` → all 9 `init<Game>()` calls → `initRecordsActions()` → `initPanelSwitcher()`
+- **Custom select dropdowns**: `initCustomSelects()` (called during init) wraps every native `<select>` element in a `.custom-select` container with a styled trigger button and dropdown menu. The native `<select>` is visually hidden (`opacity: 0`) but kept in the DOM so form state and change events continue to work. Keyboard navigation (ArrowDown/ArrowUp, Enter, Escape) and ARIA attributes are fully supported.
+
+### Special rendering behaviors
+
+- **Focus stage pseudo-fullscreen**: The antisaccade / focus training stage (`refs.focusStage`) can enter a pseudo-fullscreen mode. When activated, the element is **reparented to `document.body`** via a comment-node placeholder system (`focusStagePlaceholder`). This allows the stage to break out of its panel's stacking context and cover the full viewport. On deactivation, the placeholder is replaced and the element returns to its original parent.
+
+### Initialization (`src/main.js` boot sequence)
+
+`initViewportHeightSync()` → `initPersistence()` → `loadRecords()` → `loadAndApplyPreferences()` → `renderStats()` / `renderRecords()` → `initSidebar()` → `setFocusFullscreenCallbacks()` → all 9 `init<Game>()` calls → `initRecordsActions()` → `initModuleSettings()` → `initCustomSelects()` → `initPanelScrollStates()` → `initPanelSwitcher()`
 
 ### Legacy file
 
