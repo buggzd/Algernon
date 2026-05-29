@@ -2704,7 +2704,7 @@
 
     .schulte-stage {
       width: min(100%, 760px);
-      grid-template-columns: minmax(0, 1fr) minmax(104px, 128px);
+      grid-template-columns: minmax(0, 1fr) minmax(96px, 112px);
       align-items: start;
     }
 
@@ -2713,7 +2713,8 @@
       grid-row: 1;
       display: grid;
       gap: var(--spacing-sm);
-      align-self: stretch;
+      align-self: start;
+      min-width: 0;
     }
 
     .schulte-dock .button-row {
@@ -2723,10 +2724,11 @@
 
     .schulte-dock .button-row button {
       width: 100%;
-      aspect-ratio: 1 / 1;
-      min-height: 0;
+      min-height: 54px;
+      max-height: 64px;
+      aspect-ratio: auto;
       border-radius: var(--rounded-md);
-      padding: 0;
+      padding: 0 10px;
       font-size: 14px;
       font-weight: 600;
       line-height: 1.2;
@@ -2753,6 +2755,7 @@
     .schulte-board {
       grid-column: 1;
       grid-row: 1;
+      min-width: 0;
     }
 
     .schulte-board {
@@ -3470,6 +3473,9 @@
       .schulte-dock .button-row button {
         flex: 1 1 0;
         min-width: 0;
+        min-height: 44px;
+        max-height: none;
+        padding: 0 12px;
       }
 
       .quick-nav-tab {
