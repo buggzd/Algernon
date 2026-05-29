@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/nicedoc/schemas/refs/heads/main/tauri-conf.schema.json",
   "productName": "Algernon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "identifier": "com.brain-gym.algernon",
   "build": {
     "frontendDist": "../dist",
@@ -35,6 +35,11 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
+    "windows": {
+      "nsis": {
+        "installerIcon": "icons/icon.ico"
+      }
+    },
     "android": {
       "minSdkVersion": 26
     },
